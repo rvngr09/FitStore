@@ -1,0 +1,37 @@
+# Laravel
+/backend-api/vendor/
+/backend-api/.env
+/backend-api/.env.*
+/backend-api/storage/*.key
+/backend-api/storage/framework/
+/backend-api/storage/logs/
+/backend-api/node_modules/
+/backend-api/public/storage/
+/backend-api/.phpunit.cache/
+
+# Next.js
+/frontend-store/.next/
+/frontend-store/node_modules/
+/frontend-store/out/
+/frontend-store/build/
+/frontend-store/dist/
+/frontend-store/.cache/
+/frontend-store/.env*.local
+
+# Common
+.DS_Store
+*.log
+*.sqlite
+*.sst
+*.lock
+*.pid
+composer.phar
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db

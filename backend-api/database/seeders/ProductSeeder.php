@@ -1,0 +1,205 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Product;
+use App\Models\Tag;
+use Illuminate\Database\Seeder;
+
+class ProductSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $products = [
+            [
+                'name' => 'Whey Isolate Protein 2kg',
+                'slug' => 'whey-isolate-protein-2kg',
+                'description' => 'Premium whey protein isolate with 25g protein per serving. Zero sugar, low fat, and fast-absorbing for optimal muscle recovery.',
+                'price' => 59.99,
+                'category_id' => 1,
+                'stock' => 50,
+                'is_featured' => true,
+                'specifications' => ['Flavors' => 'Chocolate, Vanilla, Strawberry', 'Protein per serving' => '25g', 'Servings' => '66', 'Weight' => '2kg'],
+                'images' => ['/images/products/protein-1.jpg'],
+                'tags' => ['best-seller', 'pro-grade'],
+            ],
+            [
+                'name' => 'Creatine Monohydrate 500g',
+                'slug' => 'creatine-monohydrate-500g',
+                'description' => 'Micronized creatine monohydrate for enhanced strength, power, and muscle gains. 100% pure with no additives.',
+                'price' => 24.99,
+                'category_id' => 1,
+                'stock' => 80,
+                'is_featured' => true,
+                'specifications' => ['Form' => 'Micronized Powder', 'Weight' => '500g', 'Servings' => '100', 'Serving Size' => '5g'],
+                'images' => ['/images/products/creatine-1.jpg'],
+                'tags' => ['best-seller', 'beginner-friendly'],
+            ],
+            [
+                'name' => 'Pre-Workout Explosion 300g',
+                'slug' => 'pre-workout-explosion-300g',
+                'description' => 'High-stim pre-workout with caffeine, beta-alanine, and citrulline malate for explosive energy and pumps.',
+                'price' => 34.99,
+                'category_id' => 1,
+                'stock' => 40,
+                'is_featured' => false,
+                'specifications' => ['Caffeine' => '200mg per serving', 'Weight' => '300g', 'Servings' => '30', 'Flavors' => 'Blue Raspberry, Fruit Punch'],
+                'images' => ['/images/products/preworkout-1.jpg'],
+                'tags' => ['new-arrival', 'pro-grade'],
+            ],
+            [
+                'name' => 'Gym Shark Tank Top',
+                'slug' => 'gym-shark-tank-top',
+                'description' => 'Breathable, moisture-wicking muscle fit tank top for intense training sessions. Available in multiple colors.',
+                'price' => 29.99,
+                'category_id' => 2,
+                'stock' => 100,
+                'is_featured' => true,
+                'specifications' => ['Material' => '90% Polyester, 10% Elastane', 'Fit' => 'Muscle Fit', 'Sizes' => 'S, M, L, XL, XXL', 'Care' => 'Machine Washable'],
+                'images' => ['/images/products/tank-1.jpg'],
+                'tags' => ['new-arrival'],
+            ],
+            [
+                'name' => 'Compression Leggings',
+                'slug' => 'compression-leggings',
+                'description' => 'High-waist compression leggings with squat-proof fabric. Perfect for weightlifting, yoga, and cardio.',
+                'price' => 44.99,
+                'category_id' => 2,
+                'stock' => 65,
+                'is_featured' => false,
+                'specifications' => ['Material' => '75% Nylon, 25% Spandex', 'Waist' => 'High-Rise', 'Sizes' => 'XS, S, M, L, XL', 'Features' => 'Squat Proof, Moisture Wicking'],
+                'images' => ['/images/products/leggings-1.jpg'],
+                'tags' => ['best-seller'],
+            ],
+            [
+                'name' => 'Adjustable Dumbbell Set 20kg',
+                'slug' => 'adjustable-dumbbell-set-20kg',
+                'description' => 'Space-saving adjustable dumbbells from 2kg to 20kg. Quick-change weight selection for seamless workouts.',
+                'price' => 149.99,
+                'category_id' => 3,
+                'stock' => 20,
+                'is_featured' => true,
+                'specifications' => ['Weight Range' => '2kg - 20kg', 'Increment' => '2kg', 'Material' => 'Cast Iron with Rubber Grip', 'Includes' => '2 Dumbbells + Stand'],
+                'images' => ['/images/products/dumbbells-1.jpg'],
+                'tags' => ['pro-grade', 'best-seller'],
+            ],
+            [
+                'name' => 'Resistance Bands Set',
+                'slug' => 'resistance-bands-set',
+                'description' => 'Set of 5 resistance bands with varying tension levels. Includes carrying bag and exercise guide.',
+                'price' => 19.99,
+                'category_id' => 3,
+                'stock' => 120,
+                'is_featured' => false,
+                'specifications' => ['Bands' => '5 Levels (X-Light to X-Heavy)', 'Material' => 'Natural Latex', 'Includes' => 'Carrying Bag, Door Anchor, Exercise Guide'],
+                'images' => ['/images/products/bands-1.jpg'],
+                'tags' => ['beginner-friendly', 'bundle-deal'],
+            ],
+            [
+                'name' => 'Yoga Mat Premium 6mm',
+                'slug' => 'yoga-mat-premium-6mm',
+                'description' => 'Extra-thick 6mm TPE yoga mat with alignment lines. Non-slip surface ideal for yoga, pilates, and floor exercises.',
+                'price' => 39.99,
+                'category_id' => 3,
+                'stock' => 45,
+                'is_featured' => false,
+                'specifications' => ['Thickness' => '6mm', 'Material' => 'TPE (Eco-Friendly)', 'Dimensions' => '183cm x 61cm', 'Features' => 'Non-Slip, Alignment Lines, Carrying Strap'],
+                'images' => ['/images/products/yogamat-1.jpg'],
+                'tags' => ['beginner-friendly'],
+            ],
+            [
+                'name' => 'Gym Duffel Bag 50L',
+                'slug' => 'gym-duffel-bag-50l',
+                'description' => 'Spacious 50L duffel bag with separate shoe compartment and wet pocket. Water-resistant with padded shoulder strap.',
+                'price' => 54.99,
+                'category_id' => 4,
+                'stock' => 35,
+                'is_featured' => false,
+                'specifications' => ['Capacity' => '50L', 'Compartments' => 'Shoe Compartment, Wet Pocket, 2 Side Pockets', 'Material' => 'Water-Resistant Polyester', 'Strap' => 'Padded Adjustable Shoulder Strap'],
+                'images' => ['/images/products/duffel-1.jpg'],
+                'tags' => ['new-arrival'],
+            ],
+            [
+                'name' => 'Shaker Bottle 700ml',
+                'slug' => 'shaker-bottle-700ml',
+                'description' => 'BPA-free shaker bottle with mixing ball and measurement markings. Leak-proof design for mess-free shaking.',
+                'price' => 9.99,
+                'category_id' => 4,
+                'stock' => 200,
+                'is_featured' => false,
+                'specifications' => ['Capacity' => '700ml', 'Material' => 'Tritan BPA-Free Plastic', 'Features' => 'Mixing Ball, Measurement Lines, Leak-Proof Lid'],
+                'images' => ['/images/products/shaker-1.jpg'],
+                'tags' => ['beginner-friendly'],
+            ],
+            [
+                'name' => 'Lifting Straps Pro',
+                'slug' => 'lifting-straps-pro',
+                'description' => 'Heavy-duty cotton lifting straps for improved grip during deadlifts, rows, and pulls. Reinforced stitching for durability.',
+                'price' => 14.99,
+                'category_id' => 4,
+                'stock' => 90,
+                'is_featured' => false,
+                'specifications' => ['Material' => 'Cotton with Neoprene Pad', 'Length' => '18 inches', 'Max Load' => '200kg', 'Pair' => '2 Straps'],
+                'images' => ['/images/products/straps-1.jpg'],
+                'tags' => ['pro-grade'],
+            ],
+            [
+                'name' => 'Percussion Massage Gun',
+                'slug' => 'percussion-massage-gun',
+                'description' => 'Deep tissue percussion massage gun with 6 speed levels and 4 interchangeable heads for muscle recovery.',
+                'price' => 89.99,
+                'category_id' => 5,
+                'stock' => 25,
+                'is_featured' => true,
+                'specifications' => ['Speeds' => '6 Levels', 'Heads' => '4 Interchangeable', 'Battery' => '2500mAh Rechargeable', 'Noise Level' => '<45dB'],
+                'images' => ['/images/products/massagegun-1.jpg'],
+                'tags' => ['pro-grade', 'limited-edition'],
+            ],
+            [
+                'name' => 'Foam Roller High Density',
+                'slug' => 'foam-roller-high-density',
+                'description' => 'High-density EVA foam roller for muscle release and recovery. Firm texture for deep tissue massage.',
+                'price' => 22.99,
+                'category_id' => 5,
+                'stock' => 60,
+                'is_featured' => false,
+                'specifications' => ['Material' => 'High-Density EVA Foam', 'Dimensions' => '45cm x 15cm', 'Weight Capacity' => '150kg', 'Surface' => 'Textured Grip'],
+                'images' => ['/images/products/foamroller-1.jpg'],
+                'tags' => ['beginner-friendly'],
+            ],
+            [
+                'name' => 'BCAA 2:1:1 400g',
+                'slug' => 'bcaa-211-400g',
+                'description' => 'Branch chain amino acids in the optimal 2:1:1 ratio. Supports muscle recovery and reduces fatigue during workouts.',
+                'price' => 28.99,
+                'category_id' => 1,
+                'stock' => 55,
+                'is_featured' => false,
+                'specifications' => ['Ratio' => '2:1:1 (Leucine:Isoleucine:Valine)', 'Weight' => '400g', 'Servings' => '40', 'Flavors' => 'Orange, Green Apple, Watermelon'],
+                'images' => ['/images/products/bcaa-1.jpg'],
+                'tags' => ['sale'],
+            ],
+            [
+                'name' => 'Weightlifting Belt Leather',
+                'slug' => 'weightlifting-belt-leather',
+                'description' => 'Premium leather weightlifting belt for heavy compound lifts. 10cm width with double prong buckle for maximum support.',
+                'price' => 69.99,
+                'category_id' => 4,
+                'stock' => 30,
+                'is_featured' => false,
+                'specifications' => ['Material' => 'Top Grain Leather', 'Width' => '10cm', 'Thickness' => '10mm', 'Closure' => 'Double Prong Buckle', 'Sizes' => 'S, M, L, XL'],
+                'images' => ['/images/products/belt-1.jpg'],
+                'tags' => ['pro-grade'],
+            ],
+        ];
+
+        foreach ($products as $data) {
+            $tags = $data['tags'] ?? [];
+            unset($data['tags']);
+
+            $product = Product::create($data);
+            $tagModels = Tag::whereIn('slug', $tags)->pluck('id');
+            $product->tags()->attach($tagModels);
+        }
+    }
+}
