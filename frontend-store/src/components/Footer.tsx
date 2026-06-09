@@ -1,31 +1,39 @@
+import Link from 'next/link';
+
 export default function Footer() {
   return (
-    <footer className="bg-secondary text-gray-400 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h3 className="text-white font-bold text-lg mb-3">FitStore</h3>
-            <p className="text-sm">Your one-stop shop for premium fitness gear, supplements, and apparel.</p>
+    <footer className="bg-on-surface w-full py-xl border-t-4 border-primary mt-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-xl px-gutter max-w-container-max mx-auto">
+        <div className="flex flex-col gap-6">
+          <div className="font-display-lg-mobile text-display-lg-mobile text-primary-fixed uppercase leading-none">
+            P+X
           </div>
-          <div>
-            <h4 className="text-white font-semibold mb-3">Quick Links</h4>
-            <ul className="space-y-2 text-sm">
-              <li><a href="/products" className="hover:text-primary transition">All Products</a></li>
-              <li><a href="/cart" className="hover:text-primary transition">Cart</a></li>
-              <li><a href="/account/orders" className="hover:text-primary transition">My Orders</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-white font-semibold mb-3">Contact</h4>
-            <ul className="space-y-2 text-sm">
-              <li>Email: support@fitstore.com</li>
-              <li>Phone: (555) 123-4567</li>
-              <li>Cash on Delivery Only</li>
-            </ul>
-          </div>
+          <p className="font-label-sm text-label-sm text-surface-variant opacity-80 uppercase max-w-xs">
+            © 2024 PERFORMANCE+X. ENGINEERED FOR ELITE RESULTS.
+          </p>
         </div>
-        <div className="border-t border-gray-700 mt-8 pt-6 text-center text-sm">
-          &copy; {new Date().getFullYear()} FitStore. All rights reserved.
+        <div className="grid grid-cols-2 gap-8">
+          <div className="flex flex-col gap-4">
+            <span className="font-label-sm text-label-sm text-primary-fixed uppercase tracking-widest border-b border-primary-fixed/30 pb-2 mb-2 w-full">Intel</span>
+            <Link href="/" className="font-label-sm text-label-sm text-surface-variant opacity-80 hover:opacity-100 hover:text-primary-fixed transition-all uppercase">
+              Support
+            </Link>
+            <Link href="/" className="font-label-sm text-label-sm text-surface-variant opacity-80 hover:opacity-100 hover:text-primary-fixed transition-all uppercase">
+              Shipping & Returns
+            </Link>
+            <Link href="/" className="font-label-sm text-label-sm text-surface-variant opacity-80 hover:opacity-100 hover:text-primary-fixed transition-all uppercase">
+              Wholesale
+            </Link>
+          </div>
+          <div className="flex flex-col gap-4">
+            <span className="font-label-sm text-label-sm text-primary-fixed uppercase tracking-widest border-b border-primary-fixed/30 pb-2 mb-2 w-full">Legal</span>
+            <Link href="/" className="font-label-sm text-label-sm text-surface-variant opacity-80 hover:opacity-100 hover:text-primary-fixed transition-all uppercase">
+              Privacy Policy
+            </Link>
+            <Link href="/" className="font-label-sm text-label-sm text-surface-variant opacity-80 hover:opacity-100 hover:text-primary-fixed transition-all uppercase">
+              Terms of Service
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

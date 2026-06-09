@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .from('user_profiles')
       .select('role')
       .eq('id', sbUser.id)
-      .single();
+      .maybeSingle();
 
     return toAppUser(sbUser, profile);
   }, []);

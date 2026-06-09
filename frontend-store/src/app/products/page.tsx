@@ -1,9 +1,10 @@
 'use client';
 
-import { Suspense, useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, use, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import ProductGrid from '@/components/ProductGrid';
+import Link from 'next/link';
+import ProductCard from '@/components/ProductCard';
 
 interface Product {
   id: number;
@@ -13,7 +14,7 @@ interface Product {
   images: string[] | null;
   stock: number;
   is_featured: boolean;
-  category: { name: string; slug: string };
+  category: { name: string; slug: string } | null;
   tags: { id: number; name: string; slug: string }[];
 }
 
@@ -23,29 +24,29 @@ interface Category {
   slug: string;
 }
 
-interface Tag {
-  id: number;
-  name: string;
-  slug: string;
-}
-
 function ProductsContent() {
   const searchParams = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
   const [lastPage, setLastPage] = useState(1);
   const [page, setPage] = useState(1);
 
   const [filters, setFilters] = useState({
-    category: searchParams.get('category') || '',
-    tag: searchParams.get('tag') || '',
-    search: searchParams.get('search') || '',
+    category: '',
+    tag: '',
+    search: '',
     sort: 'created_at',
-    direction: 'desc',
+    direction: 'desc' as 'asc' | 'desc',
   });
+
+  useEffect(() => {
+    const cat = searchParams.get('category') || '';
+    const tag = searchParams.get('tag') || '';
+    const q = searchParams.get('search') || '';
+    setFilters(prev => ({ ...prev, category: cat, tag, search: q }));
+  }, [searchParams]);
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
@@ -82,119 +83,145 @@ function ProductsContent() {
 
   useEffect(() => {
     async function loadFilters() {
-      const [{ data: cats }, { data: tgs }] = await Promise.all([
+      const [{ data: cats }] = await Promise.all([
         supabase.from('categories').select('id, name, slug').eq('is_active', true).order('sort_order'),
-        supabase.from('tags').select('id, name, slug').order('name'),
       ]);
       setCategories((cats || []) as Category[]);
-      setTags((tgs || []) as Tag[]);
     }
     loadFilters();
   }, []);
 
-  useEffect(() => {
+  const toggleCategory = (slug: string) => {
+    setFilters(prev => ({
+      ...prev,
+      category: prev.category === slug ? '' : slug,
+    }));
     setPage(1);
-  }, [filters.category, filters.tag, filters.search]);
+  };
+
+  const updateSort = (sort: string) => {
+    if (sort === 'price-asc') {
+      setFilters(prev => ({ ...prev, sort: 'price', direction: 'asc' }));
+    } else if (sort === 'price-desc') {
+      setFilters(prev => ({ ...prev, sort: 'price', direction: 'desc' }));
+    } else if (sort === 'name') {
+      setFilters(prev => ({ ...prev, sort: 'name', direction: 'asc' }));
+    } else {
+      setFilters(prev => ({ ...prev, sort: 'created_at', direction: 'desc' }));
+    }
+    setPage(1);
+  };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Products</h1>
+    <div className="max-w-container-max mx-auto px-gutter py-xl">
+      <header className="mb-xl text-center md:text-left">
+        <h1 className="font-display-lg text-display-lg hidden md:block uppercase text-on-surface">ELITE EQUIPMENT</h1>
+        <h1 className="font-display-lg-mobile text-display-lg-mobile block md:hidden uppercase text-on-surface">ELITE GEAR</h1>
+        <p className="font-body-lg text-body-lg text-secondary max-w-2xl mt-xs">Precision-engineered tools designed to push your limits and maximize performance output. Select your arsenal.</p>
+      </header>
 
-      <div className="flex flex-col lg:flex-row gap-8">
-        <aside className="lg:w-64 flex-shrink-0">
-          <div className="bg-white rounded-lg shadow-sm p-4 space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={filters.search}
-                onChange={(e) => setFilters((f) => ({ ...f, search: e.target.value }))}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
-              <select
-                value={filters.category}
-                onChange={(e) => setFilters((f) => ({ ...f, category: e.target.value }))}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-              >
-                <option value="">All Categories</option>
+      <div className="flex flex-col md:flex-row gap-xl">
+        <aside className="w-full md:w-64 flex-shrink-0">
+          <div className="sticky top-24 bg-surface-container-low p-sm border border-outline-variant brutal-shadow">
+            <h2 className="font-headline-md text-headline-md text-on-surface mb-md border-b-2 border-on-surface pb-xs uppercase">Filters</h2>
+
+            <div className="mb-lg">
+              <h3 className="font-label-sm text-label-sm text-secondary uppercase tracking-widest mb-xs">Category</h3>
+              <ul className="space-y-xs">
                 {categories.map((cat) => (
-                  <option key={cat.id} value={cat.slug}>{cat.name}</option>
+                  <li key={cat.id}>
+                    <label className="flex items-center space-x-xs cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        checked={filters.category === cat.slug}
+                        onChange={() => toggleCategory(cat.slug)}
+                        className="form-checkbox text-primary border-outline-variant rounded-none bg-surface focus:ring-primary focus:ring-offset-0 focus:border-primary h-5 w-5"
+                      />
+                      <span className="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">{cat.name}</span>
+                    </label>
+                  </li>
                 ))}
-              </select>
+              </ul>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Tag</label>
-              <select
-                value={filters.tag}
-                onChange={(e) => setFilters((f) => ({ ...f, tag: e.target.value }))}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-              >
-                <option value="">All Tags</option>
-                {tags.map((tag) => (
-                  <option key={tag.id} value={tag.slug}>{tag.name}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
-              <select
-                value={`${filters.sort}-${filters.direction}`}
-                onChange={(e) => {
-                  const [sort, direction] = e.target.value.split('-');
-                  setFilters((f) => ({ ...f, sort, direction }));
-                }}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-              >
-                <option value="created_at-desc">Newest</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="name-asc">Name: A-Z</option>
-              </select>
-            </div>
+
             <button
-              onClick={() => setFilters({ category: '', tag: '', search: '', sort: 'created_at', direction: 'desc' })}
-              className="w-full text-sm text-gray-500 hover:text-primary transition"
+              onClick={() => { setFilters({ category: '', tag: '', search: '', sort: 'created_at', direction: 'desc' }); setPage(1); }}
+              className="w-full bg-on-surface text-on-primary font-label-sm text-label-sm uppercase py-sm px-md hover:bg-surface-variant hover:text-on-surface border-2 border-on-surface transition-all duration-200"
             >
-              Clear Filters
+              Apply Filters
             </button>
           </div>
         </aside>
 
-        <div className="flex-1">
+        <section className="flex-1">
+          <div className="flex justify-between items-end border-b border-outline-variant pb-xs mb-md">
+            <span className="font-label-sm text-label-sm text-secondary uppercase">{total} Results</span>
+            <div className="flex items-center space-x-xs">
+              <span className="font-label-sm text-label-sm text-secondary uppercase">Sort By:</span>
+              <select
+                onChange={(e) => updateSort(e.target.value)}
+                className="bg-transparent border-none font-label-sm text-label-sm text-on-surface uppercase focus:ring-0 cursor-pointer pl-0 py-0 pr-6"
+              >
+                <option value="recommended">Recommended</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="name">Name</option>
+              </select>
+            </div>
+          </div>
+
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-gray-100 rounded-lg aspect-square animate-pulse" />
+                <div key={i} className="bg-surface-container aspect-square animate-pulse border border-outline-variant" />
               ))}
             </div>
+          ) : products.length === 0 ? (
+            <div className="text-center py-xl">
+              <span className="material-symbols-outlined text-[48px] text-secondary">search_off</span>
+              <p className="font-body-lg text-body-lg text-secondary mt-4">No products found</p>
+            </div>
           ) : (
-            <>
-              <p className="text-sm text-gray-500 mb-4">{total} product(s)</p>
-              <ProductGrid products={products} />
-              {lastPage > 1 && (
-                <div className="flex justify-center gap-2 mt-8">
-                  {Array.from({ length: lastPage }, (_, i) => i + 1).map((p) => (
-                    <button
-                      key={p}
-                      onClick={() => setPage(p)}
-                      className={`px-3 py-1 rounded ${
-                        p === page
-                          ? 'bg-primary text-white'
-                          : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
-                      }`}
-                    >
-                      {p}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
           )}
-        </div>
+
+          {lastPage > 1 && (
+            <div className="mt-xl flex justify-center items-center space-x-sm">
+              <button
+                onClick={() => setPage(p => Math.max(1, p - 1))}
+                disabled={page === 1}
+                className="p-xs text-secondary hover:text-on-surface border border-transparent hover:border-on-surface transition-all disabled:opacity-30"
+              >
+                <span className="material-symbols-outlined">chevron_left</span>
+              </button>
+              {Array.from({ length: lastPage }, (_, i) => i + 1).slice(0, 5).map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setPage(p)}
+                  className={`w-10 h-10 flex items-center justify-center font-headline-md text-headline-md border transition-all ${
+                    p === page
+                      ? 'bg-on-surface text-on-primary border-on-surface'
+                      : 'text-on-surface hover:bg-surface-variant border-transparent hover:border-outline-variant'
+                  }`}
+                >
+                  {p}
+                </button>
+              ))}
+              {lastPage > 5 && <span className="text-secondary">...</span>}
+              <button
+                onClick={() => setPage(p => Math.min(lastPage, p + 1))}
+                disabled={page === lastPage}
+                className="p-xs text-secondary hover:text-on-surface border border-transparent hover:border-on-surface transition-all disabled:opacity-30"
+              >
+                <span className="material-symbols-outlined">chevron_right</span>
+              </button>
+            </div>
+          )}
+        </section>
       </div>
     </div>
   );
@@ -202,15 +229,7 @@ function ProductsContent() {
 
 export default function ProductsPage() {
   return (
-    <Suspense fallback={
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="animate-pulse grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="bg-gray-100 rounded-lg aspect-square" />
-          ))}
-        </div>
-      </div>
-    }>
+    <Suspense fallback={<div className="max-w-container-max mx-auto px-gutter py-xl"><div className="bg-surface-container aspect-square animate-pulse" /></div>}>
       <ProductsContent />
     </Suspense>
   );

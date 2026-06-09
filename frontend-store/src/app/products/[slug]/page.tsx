@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import Link from 'next/link';
+import { useEffect, useState, use } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useCart } from '@/contexts/CartContext';
+import Link from 'next/link';
 
 interface Product {
   id: number;
@@ -12,38 +11,33 @@ interface Product {
   slug: string;
   description: string;
   price: number;
-  specifications: Record<string, string> | null;
   images: string[] | null;
   stock: number;
+  specifications: Record<string, string> | null;
   is_featured: boolean;
-  category: { id: number; name: string; slug: string };
+  category: { name: string; slug: string } | null;
   tags: { id: number; name: string; slug: string }[];
 }
 
-export default function ProductDetailPage() {
-  const { slug } = useParams<{ slug: string }>();
+export default function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
   const { addItem } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
-  const [adding, setAdding] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [error, setError] = useState('');
+  const [adding, setAdding] = useState(false);
 
   useEffect(() => {
     async function load() {
       try {
         const { data } = await supabase
           .from('products')
-          .select('*, category:categories(*), tags:product_tag(tag:tags(*))')
+          .select('*, category:categories(name, slug), tags:product_tag(tag:tags(id, name, slug))')
           .eq('slug', slug)
           .single();
-        if (!data) {
-          setError('Product not found');
-        } else {
-          setProduct(data as unknown as Product);
-        }
-      } catch {
-        setError('Product not found');
+        setProduct((data || null) as unknown as Product);
+      } catch (err) {
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -55,10 +49,9 @@ export default function ProductDetailPage() {
     if (!product) return;
     setAdding(true);
     try {
-      await addItem(product.id, quantity);
-      setQuantity(1);
-    } catch {
-      // error handled by cart
+      for (let i = 0; i < quantity; i++) {
+        await addItem(product.id);
+      }
     } finally {
       setAdding(false);
     }
@@ -66,126 +59,123 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="animate-pulse grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="bg-gray-200 aspect-square rounded-lg" />
-          <div className="space-y-4">
-            <div className="h-8 bg-gray-200 rounded w-3/4" />
-            <div className="h-6 bg-gray-200 rounded w-1/4" />
-            <div className="h-24 bg-gray-200 rounded" />
+      <div className="max-w-container-max mx-auto px-gutter py-xl">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-xl">
+          <div className="md:col-span-7 aspect-square bg-surface-container animate-pulse border border-outline-variant" />
+          <div className="md:col-span-5 space-y-4">
+            <div className="h-12 bg-surface-container animate-pulse" />
+            <div className="h-8 bg-surface-container animate-pulse w-1/3" />
+            <div className="h-24 bg-surface-container animate-pulse" />
           </div>
         </div>
       </div>
     );
   }
 
-  if (error || !product) {
+  if (!product) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-        <h2 className="text-2xl font-bold text-gray-900">{error || 'Product not found'}</h2>
-        <Link href="/products" className="text-primary hover:underline mt-4 inline-block">
-          &larr; Back to products
-        </Link>
+      <div className="max-w-container-max mx-auto px-gutter py-xl text-center">
+        <span className="material-symbols-outlined text-[48px] text-secondary">search_off</span>
+        <p className="font-body-lg text-body-lg text-secondary mt-4">Product not found</p>
+        <Link href="/products" className="font-label-sm text-label-sm uppercase border-b-2 border-on-surface pb-1 mt-4 inline-block">Back to Shop</Link>
       </div>
     );
   }
+
+  const specs = product.specifications;
+  const specEntries = specs && typeof specs === 'object' ? Object.entries(specs) : [];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <nav className="text-sm text-gray-500 mb-8">
-        <Link href="/" className="hover:text-primary">Home</Link>
-        {' / '}
-        <Link href="/products" className="hover:text-primary">Products</Link>
-        {' / '}
-        <Link href={`/products?category=${product.category.slug}`} className="hover:text-primary">
-          {product.category.name}
-        </Link>
-        {' / '}
-        <span className="text-gray-900">{product.name}</span>
-      </nav>
+    <div className="max-w-container-max mx-auto px-gutter py-xl">
+      <div className="flex items-center gap-xs font-label-sm text-label-sm text-secondary mb-lg">
+        <Link href="/" className="hover:text-on-surface">HOME</Link>
+        <span className="material-symbols-outlined text-[16px]">chevron_right</span>
+        <Link href="/products" className="hover:text-on-surface">{(product.category?.name ?? 'Products').toUpperCase()}</Link>
+        <span className="material-symbols-outlined text-[16px]">chevron_right</span>
+        <span className="text-on-surface font-bold">{product.name.toUpperCase()}</span>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div className="bg-gray-100 rounded-lg aspect-square flex items-center justify-center">
-          <svg className="w-32 h-32 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-xl mb-xl">
+        <div className="md:col-span-7 flex flex-col gap-sm">
+          <div className="w-full bg-surface-container aspect-square relative border border-outline-variant p-md flex items-center justify-center">
+            <div className="w-full h-full bg-surface-variant flex items-center justify-center">
+              <span className="material-symbols-outlined text-[80px] text-on-surface-variant">fitness_center</span>
+            </div>
+            {product.stock < 5 && product.stock > 0 && (
+              <div className="absolute top-sm left-sm bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-xs py-base border border-on-surface uppercase">
+                Low Stock
+              </div>
+            )}
+          </div>
         </div>
 
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
-          <p className="text-sm text-gray-500 mt-1 capitalize">{product.category.name}</p>
-          <p className="text-3xl font-bold text-primary mt-4">${Number(product.price).toFixed(2)}</p>
-
-          {product.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-4">
-              {product.tags.map((tag) => (
-                <Link
-                  key={tag.id}
-                  href={`/products?tag=${tag.slug}`}
-                  className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded hover:bg-primary hover:text-white transition"
-                >
-                  {tag.name}
-                </Link>
-              ))}
+        <div className="md:col-span-5 flex flex-col">
+          <div className="mb-sm">
+            <h1 className="font-headline-xl text-headline-xl md:font-display-lg md:text-display-lg uppercase text-on-surface mb-base leading-none">
+              {product.name}
+            </h1>
+            <div className="flex items-center gap-xs font-label-sm text-label-sm text-secondary">
+              <div className="flex text-primary">
+                {[...Array(4)].map((_, i) => (
+                  <span key={i} className="material-symbols-outlined text-[16px]" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                ))}
+                <span className="material-symbols-outlined text-[16px]" style={{fontVariationSettings: "'FILL' 1"}}>star_half</span>
+              </div>
+              <span>4.8 (240 REVIEWS)</span>
             </div>
-          )}
-
-          <div className="mt-6">
-            <h3 className="font-semibold text-gray-900">Description</h3>
-            <p className="text-gray-600 mt-2 leading-relaxed">{product.description}</p>
           </div>
 
-          {product.specifications && Object.keys(product.specifications).length > 0 && (
-            <div className="mt-6">
-              <h3 className="font-semibold text-gray-900 mb-3">Specifications</h3>
-              <div className="bg-gray-50 rounded-lg divide-y divide-gray-200">
-                {Object.entries(product.specifications).map(([key, value]) => (
-                  <div key={key} className="flex justify-between px-4 py-2 text-sm">
-                    <span className="text-gray-600">{key}</span>
-                    <span className="font-medium text-gray-900">{value}</span>
-                  </div>
+          <div className="font-headline-xl text-headline-xl text-on-surface mb-md">
+            ${Number(product.price).toFixed(2)}
+          </div>
+
+          <p className="font-body-lg text-body-lg text-secondary mb-lg">
+            {product.description}
+          </p>
+
+          {specEntries.length > 0 && (
+            <div className="mb-lg border border-outline-variant">
+              <ul className="divide-y divide-outline-variant">
+                {specEntries.slice(0, 4).map(([key, value]) => (
+                  <li key={key} className="py-sm px-sm flex justify-between items-center">
+                    <span className="font-label-sm text-label-sm text-secondary">{key.toUpperCase()}</span>
+                    <span className="font-label-sm text-label-sm text-on-surface">{String(value).toUpperCase()}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           )}
 
-          <div className="mt-8 flex items-center gap-4">
-            <div className="flex items-center border border-gray-300 rounded-lg">
+          <div className="flex items-center gap-sm mb-lg">
+            <span className="font-label-sm text-label-sm uppercase text-secondary">Qty:</span>
+            <div className="flex border-2 border-on-surface">
               <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="px-3 py-2 hover:bg-gray-100"
+                onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                className="px-3 py-2 font-headline-md hover:bg-surface-container transition-colors"
               >
                 -
               </button>
-              <span className="px-4 py-2 border-x border-gray-300">{quantity}</span>
+              <span className="px-4 py-2 font-headline-md text-on-surface border-x-2 border-on-surface">{quantity}</span>
               <button
-                onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                className="px-3 py-2 hover:bg-gray-100"
+                onClick={() => setQuantity(q => Math.min(product.stock || 99, q + 1))}
+                className="px-3 py-2 font-headline-md hover:bg-surface-container transition-colors"
               >
                 +
               </button>
             </div>
+          </div>
+
+          <div className="mt-auto pt-lg border-t border-outline-variant">
             <button
               onClick={handleAdd}
               disabled={adding || product.stock === 0}
-              className="flex-1 bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition disabled:opacity-50"
+              className="w-full bg-primary-container text-on-primary-container font-headline-md text-headline-md uppercase py-md border-2 border-on-surface hover:bg-primary-fixed transition-colors brutal-shadow active:translate-y-1 active:shadow-none mb-sm flex justify-center items-center gap-sm disabled:opacity-50"
             >
-              {adding ? 'Adding...' : product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+              <span className="material-symbols-outlined">shopping_cart</span>
+              {product.stock === 0 ? 'Sold Out' : adding ? 'Adding...' : 'Add to Cart'}
             </button>
+            <p className="font-label-sm text-label-sm text-secondary text-center">Ships within 24 hours. Free standard shipping.</p>
           </div>
-
-          <p className="text-sm text-gray-500 mt-4">
-            {product.stock > 0
-              ? `${product.stock} in stock`
-              : 'Currently out of stock'}
-          </p>
-
-          <p className="text-xs text-gray-400 mt-2 flex items-center gap-1">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Cash on Delivery — Pay when you receive
-          </p>
         </div>
       </div>
     </div>

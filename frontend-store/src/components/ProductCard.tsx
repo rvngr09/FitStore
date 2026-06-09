@@ -12,7 +12,7 @@ interface Product {
   images: string[] | null;
   stock: number;
   is_featured: boolean;
-  category: { name: string; slug: string };
+  category: { name: string; slug: string } | null;
   tags: { id: number; name: string; slug: string }[];
 }
 
@@ -20,7 +20,9 @@ export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
   const [adding, setAdding] = useState(false);
 
-  const handleAdd = async () => {
+  const handleAdd = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     setAdding(true);
     try {
       await addItem(product.id);
@@ -29,42 +31,50 @@ export default function ProductCard({ product }: { product: Product }) {
     }
   };
 
-  const imageUrl = product.images?.[0] || '/placeholder.png';
-
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition group">
-      <Link href={`/products/${product.slug}`}>
-        <div className="aspect-square bg-gray-100 flex items-center justify-center overflow-hidden">
-          <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-            <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
+    <Link href={`/products/${product.slug}`} className="bg-surface-container-lowest border border-outline-variant p-sm flex flex-col relative group brutal-shadow-hover transition-all duration-300">
+      {product.stock < 5 && product.stock > 0 && (
+        <div className="absolute top-sm left-sm bg-primary text-on-primary font-label-sm text-[10px] px-2 py-1 uppercase tracking-widest z-10">Low Stock</div>
+      )}
+      {product.stock === 0 && (
+        <div className="absolute top-sm left-sm bg-on-surface text-on-primary font-label-sm text-[10px] px-2 py-1 uppercase tracking-widest z-10">Out of Stock</div>
+      )}
+      <div className="aspect-square bg-surface-container-low mb-sm overflow-hidden flex items-center justify-center border border-surface-variant relative">
+        {product.images?.[0] ? (
+          <img
+            src={product.images[0]}
+            alt={product.name}
+            className="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <div className="w-full h-full bg-surface-variant flex items-center justify-center">
+            <span className="material-symbols-outlined text-[40px] text-on-surface-variant">fitness_center</span>
           </div>
-          {product.stock < 5 && product.stock > 0 && (
-            <span className="absolute top-2 left-2 bg-accent text-white text-xs px-2 py-1 rounded">Low Stock</span>
-          )}
-          {product.stock === 0 && (
-            <span className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">Out of Stock</span>
-          )}
-        </div>
-      </Link>
-
-      <div className="p-4">
-        <Link href={`/products/${product.slug}`}>
-          <h3 className="font-semibold text-gray-900 truncate group-hover:text-primary transition">{product.name}</h3>
-        </Link>
-        <p className="text-sm text-gray-500 mt-1 capitalize">{product.category.name}</p>
-        <div className="flex items-center justify-between mt-3">
-          <span className="text-lg font-bold text-gray-900">${Number(product.price).toFixed(2)}</span>
+        )}
+        <div className="absolute inset-0 bg-on-surface/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
           <button
             onClick={handleAdd}
             disabled={adding || product.stock === 0}
-            className="bg-primary text-white px-3 py-1.5 rounded text-sm hover:bg-primary-dark transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-primary text-on-surface font-headline-md text-headline-md px-md py-xs uppercase tracking-tight transform translate-y-4 group-hover:translate-y-0 transition-all duration-300"
           >
-            {adding ? '...' : 'Add'}
+            {adding ? '...' : 'Quick Add'}
           </button>
         </div>
       </div>
-    </div>
+      <div className="flex-1 flex flex-col">
+        <h3 className="font-headline-md text-headline-md text-on-surface leading-tight mb-xs uppercase truncate">{product.name}</h3>
+        <p className="font-body-md text-body-md text-on-surface-variant mb-md line-clamp-2">{product.category?.name ?? 'General'}</p>
+        <div className="mt-auto flex justify-between items-end pt-sm border-t border-surface-variant">
+          <span className="font-headline-md text-headline-md text-on-surface">${Number(product.price).toFixed(2)}</span>
+          <button
+            onClick={handleAdd}
+            disabled={adding || product.stock === 0}
+            className="text-primary hover:text-on-surface transition-colors"
+          >
+            <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1", fontSize: '32px' }}>add_circle</span>
+          </button>
+        </div>
+      </div>
+    </Link>
   );
 }

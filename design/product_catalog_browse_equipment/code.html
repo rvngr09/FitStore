@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PERFORMANCE+X - Product Catalog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .text-shadow-brutal {
+            text-shadow: 2px 2px 0px rgba(26, 28, 28, 1);
+        }
+        .box-shadow-brutal {
+            box-shadow: 4px 4px 0px 0px rgba(26, 28, 28, 1);
+        }
+        .box-shadow-brutal-hover:hover {
+            box-shadow: 8px 8px 0px 0px rgba(26, 28, 28, 1);
+            transform: translate(-4px, -4px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface": "#1a1c1c",
+                      "outline-variant": "#c4c9ac",
+                      "on-primary-container": "#5b7300",
+                      "on-tertiary-fixed-variant": "#374956",
+                      "tertiary-fixed-dim": "#b6c9d8",
+                      "outline": "#747a60",
+                      "on-background": "#1a1c1c",
+                      "primary-fixed-dim": "#abd600",
+                      "surface-dim": "#dadada",
+                      "on-primary-fixed": "#161e00",
+                      "on-secondary-fixed-variant": "#474646",
+                      "surface-bright": "#f9f9f9",
+                      "surface-container-lowest": "#ffffff",
+                      "primary": "#506600",
+                      "tertiary": "#4f616e",
+                      "on-primary": "#ffffff",
+                      "inverse-surface": "#2f3131",
+                      "secondary": "#5f5e5e",
+                      "surface-container": "#eeeeee",
+                      "on-secondary": "#ffffff",
+                      "surface-container-low": "#f3f3f3",
+                      "primary-fixed": "#c3f400",
+                      "secondary-fixed": "#e5e2e1",
+                      "inverse-on-surface": "#f1f1f1",
+                      "tertiary-fixed": "#d2e5f5",
+                      "background": "#f9f9f9",
+                      "surface-variant": "#e2e2e2",
+                      "on-surface-variant": "#444933",
+                      "on-secondary-container": "#656464",
+                      "on-secondary-fixed": "#1c1b1b",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-fixed-variant": "#3c4d00",
+                      "surface-container-highest": "#e2e2e2",
+                      "surface-container-high": "#e8e8e8",
+                      "secondary-fixed-dim": "#c8c6c5",
+                      "primary-container": "#ccff00",
+                      "on-tertiary-container": "#5b6d7a",
+                      "surface": "#f9f9f9",
+                      "tertiary-container": "#dcefff",
+                      "inverse-primary": "#abd600",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed": "#0b1d29",
+                      "secondary-container": "#e5e2e1",
+                      "error": "#ba1a1a",
+                      "error-container": "#ffdad6",
+                      "surface-tint": "#506600",
+                      "on-error": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "lg": "48px",
+                      "xl": "80px",
+                      "base": "4px",
+                      "md": "24px",
+                      "xs": "8px",
+                      "container-max": "1280px",
+                      "sm": "16px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "display-lg": [
+                              "Anton"
+                      ],
+                      "body-md": [
+                              "Archivo Narrow"
+                      ],
+                      "headline-md": [
+                              "Archivo Narrow"
+                      ],
+                      "display-lg-mobile": [
+                              "Anton"
+                      ],
+                      "headline-xl-mobile": [
+                              "Anton"
+                      ],
+                      "headline-xl": [
+                              "Anton"
+                      ],
+                      "label-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "body-lg": [
+                              "Archivo Narrow"
+                      ]
+              },
+              "fontSize": {
+                      "display-lg": [
+                              "80px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-xl-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-xl": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar -->
+<nav class="bg-surface dark:bg-on-surface w-full top-0 sticky border-b-2 border-on-surface dark:border-outline-variant z-50">
+<div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-20">
+<!-- Brand Logo -->
+<a class="font-display-lg text-display-lg uppercase tracking-tight text-on-surface dark:text-surface-bright hidden md:block" href="#" style="font-size: 40px; line-height: 1;">
+                PERFORMANCE+X
+            </a>
+<a class="font-display-lg-mobile text-display-lg-mobile uppercase tracking-tight text-on-surface dark:text-surface-bright block md:hidden" href="#" style="font-size: 32px; line-height: 1;">
+                PERFORMANCE+X
+            </a>
+<!-- Navigation Links -->
+<ul class="hidden md:flex space-x-lg h-full items-center">
+<li><a class="font-label-sm text-label-sm text-secondary dark:text-secondary-fixed-dim hover:text-on-surface dark:hover:text-surface-bright hover:bg-surface-container dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 h-full flex items-center px-4" href="#">Training</a></li>
+<!-- Highlight 'Equipment' based on intent (Product Catalog) -->
+<li><a class="font-label-sm text-label-sm text-primary dark:text-primary-fixed-dim border-b-4 border-primary pb-1 h-full flex items-center px-4 active:translate-y-0.5 transition-transform hover:bg-surface-container dark:hover:bg-on-secondary-fixed-variant duration-200" href="#">Equipment</a></li>
+<li><a class="font-label-sm text-label-sm text-secondary dark:text-secondary-fixed-dim hover:text-on-surface dark:hover:text-surface-bright hover:bg-surface-container dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 h-full flex items-center px-4" href="#">Nutrition</a></li>
+<li><a class="font-label-sm text-label-sm text-secondary dark:text-secondary-fixed-dim hover:text-on-surface dark:hover:text-surface-bright hover:bg-surface-container dark:hover:bg-on-secondary-fixed-variant transition-colors duration-200 h-full flex items-center px-4" href="#">Apparel</a></li>
+</ul>
+<!-- Trailing Icons -->
+<div class="flex items-center space-x-md">
+<button class="text-on-surface dark:text-surface-bright hover:text-primary transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="text-on-surface dark:text-surface-bright hover:text-primary transition-colors duration-200 relative">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute -top-1 -right-1 bg-primary text-on-primary font-label-sm text-[10px] w-4 h-4 flex items-center justify-center rounded-full">3</span>
+</button>
+<button class="text-on-surface dark:text-surface-bright hover:text-primary transition-colors duration-200 hidden md:block">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+<!-- Mobile Menu Toggle -->
+<button class="text-on-surface dark:text-surface-bright hover:text-primary transition-colors duration-200 md:hidden">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="max-w-container-max mx-auto px-gutter py-xl">
+<!-- Page Header -->
+<header class="mb-xl text-center md:text-left">
+<h1 class="font-display-lg text-display-lg hidden md:block uppercase text-on-surface">ELITE EQUIPMENT</h1>
+<h1 class="font-display-lg-mobile text-display-lg-mobile block md:hidden uppercase text-on-surface">ELITE EQPMNT</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mt-xs">Precision-engineered tools designed to push your limits and maximize performance output. Select your arsenal.</p>
+</header>
+<div class="flex flex-col md:flex-row gap-xl">
+<!-- Sidebar Filters -->
+<aside class="w-full md:w-64 flex-shrink-0">
+<div class="sticky top-24 bg-surface-container-low p-sm border border-outline-variant box-shadow-brutal">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-md border-b-2 border-on-surface pb-xs uppercase">Filters</h2>
+<!-- Category Filter -->
+<div class="mb-lg">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-xs">Category</h3>
+<ul class="space-y-xs">
+<li>
+<label class="flex items-center space-x-xs cursor-pointer group">
+<input checked="" class="form-checkbox text-primary border-outline-variant rounded-none bg-surface focus:ring-primary focus:ring-offset-0 focus:border-primary h-5 w-5" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Strength Training</span>
+</label>
+</li>
+<li>
+<label class="flex items-center space-x-xs cursor-pointer group">
+<input class="form-checkbox text-primary border-outline-variant rounded-none bg-surface focus:ring-primary focus:ring-offset-0 focus:border-primary h-5 w-5" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Cardiovascular</span>
+</label>
+</li>
+<li>
+<label class="flex items-center space-x-xs cursor-pointer group">
+<input checked="" class="form-checkbox text-primary border-outline-variant rounded-none bg-surface focus:ring-primary focus:ring-offset-0 focus:border-primary h-5 w-5" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Recovery &amp; Mobility</span>
+</label>
+</li>
+<li>
+<label class="flex items-center space-x-xs cursor-pointer group">
+<input class="form-checkbox text-primary border-outline-variant rounded-none bg-surface focus:ring-primary focus:ring-offset-0 focus:border-primary h-5 w-5" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Nutrition &amp; Supplements</span>
+</label>
+</li>
+</ul>
+</div>
+<!-- Price Filter -->
+<div class="mb-lg">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-xs">Price Range</h3>
+<div class="flex items-center space-x-xs mb-xs">
+<input class="w-full bg-surface-container-lowest border border-outline-variant font-label-sm text-label-sm text-on-surface p-xs focus:outline-none focus:border-on-surface focus:border-b-2 text-center" readonly="" type="text" value="$0"/>
+<span class="font-body-md text-on-surface-variant">-</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant font-label-sm text-label-sm text-on-surface p-xs focus:outline-none focus:border-on-surface focus:border-b-2 text-center" readonly="" type="text" value="$500+"/>
+</div>
+<!-- Custom Range Slider Representation -->
+<div class="relative w-full h-base bg-surface-variant mt-sm">
+<div class="absolute left-0 right-1/4 h-full bg-primary"></div>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-on-surface border-2 border-primary rounded-full cursor-pointer shadow-sm"></div>
+<div class="absolute right-1/4 top-1/2 -translate-y-1/2 w-4 h-4 bg-on-surface border-2 border-primary rounded-full cursor-pointer shadow-sm"></div>
+</div>
+</div>
+<button class="w-full bg-on-surface text-on-primary font-label-sm text-label-sm uppercase py-sm px-md hover:bg-surface-variant hover:text-on-surface border-2 border-on-surface transition-all duration-200">
+                        Apply Filters
+                    </button>
+</div>
+</aside>
+<!-- Product Grid Canvas -->
+<section class="flex-1">
+<!-- Sort & Info Bar -->
+<div class="flex justify-between items-end border-b border-outline-variant pb-xs mb-md">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Showing 24 Results</span>
+<div class="flex items-center space-x-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Sort By:</span>
+<select class="bg-transparent border-none font-label-sm text-label-sm text-on-surface uppercase focus:ring-0 cursor-pointer pl-0 py-0 pr-6">
+<option>Recommended</option>
+<option>Price: Low to High</option>
+<option>Price: High to Low</option>
+<option>New Arrivals</option>
+</select>
+</div>
+</div>
+<!-- Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
+<!-- Product Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-sm flex flex-col relative group box-shadow-brutal-hover transition-all duration-300">
+<div class="absolute top-sm left-sm bg-primary text-on-primary font-label-sm text-[10px] px-2 py-1 uppercase tracking-widest z-10">Best Seller</div>
+<div class="aspect-square bg-surface-container-low mb-sm overflow-hidden flex items-center justify-center border border-surface-variant relative">
+<img alt="Hex Dumbbells" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500" data-alt="A pair of high-quality, professional-grade black hex dumbbells resting on a clean, light grey textured surface. The lighting is bright and high-key, highlighting the engineered knurling on the chrome handles. The mood is modern, athletic, and intense, fitting a premium fitness brand aesthetic. White space around the product allows it to pop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoAcDdUODqW9XdnF0Xu_D3UNL4FOZfZBMxB4kHRoPtw9PPwRQtkxJprbGrA_tLITXw09WxI1dalV4AghFcfpsn6ulYiJTmEujM78HWYVZbDB-orX2cApJZdCioDdXusS5U_OYsttlEEC6qIhxKHyQGNrlP_EV8aAlHFuMyfa-zqeSKFILfONQOJcNvWGmkZIvkG95Dj4fRv2OVZ4B6pTZWXVQZJVMXKLQtoOrSCYzlb7Pf6ZUgxNs45gzGs2hKEjmRcbYGxI_gPx8"/>
+<!-- Quick Add Overlay -->
+<div class="absolute inset-0 bg-on-surface/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+<button class="bg-primary text-on-surface font-headline-md text-headline-md px-md py-xs uppercase tracking-tight transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                     Quick Add
+                                 </button>
+</div>
+</div>
+<div class="flex-1 flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface leading-tight mb-xs uppercase">Pro-Grip Hex Dumbbells</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md line-clamp-2">Premium rubber-encased heads prevent rolling and protect floors. Engineered chrome handles.</p>
+<div class="mt-auto flex justify-between items-end pt-sm border-t border-surface-variant">
+<span class="font-headline-md text-headline-md text-on-surface">$85.00 <span class="font-body-md text-on-surface-variant">/ pair</span></span>
+<button class="text-primary hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="add_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1; font-size: 32px;">add_circle</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-sm flex flex-col relative group box-shadow-brutal-hover transition-all duration-300">
+<div class="aspect-square bg-surface-container-low mb-sm overflow-hidden flex items-center justify-center border border-surface-variant relative">
+<img alt="Recovery Foam Roller" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500" data-alt="A textured black foam roller standing vertically against a stark white background. High-contrast studio lighting emphasizes the dense, structural grid pattern of the roller's surface. A subtle shadow drops to the right, creating a sense of depth and brutalist modernism. The overall aesthetic is clean, technical, and performance-oriented." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeKg3ZjcWvaivxVfpZZ-UFB-E7v4UxF81vw5cVMoiI4PtwbKgttXe9wC5Ecd4RqWWLCryVSBPXpIKsMdzRzfJ9n6yoiJil0EuRCRE4VvzCUl0ZvXt-Pzu9rllVoYR5Zyg_g3EMHYttDlWi54TlZ4C_P2XV1G3wfl4k_--QDyQ82fOqAmR30A60sppOlJwFb94JIjHTsmb5P0EDuzw8bR3vnJSXMgzj7kye-dkqyfpxjkstPobJ30i-BEfXc7M0pemijtV1ba9vtYc"/>
+<div class="absolute inset-0 bg-on-surface/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+<button class="bg-primary text-on-surface font-headline-md text-headline-md px-md py-xs uppercase tracking-tight transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                     Quick Add
+                                 </button>
+</div>
+</div>
+<div class="flex-1 flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface leading-tight mb-xs uppercase">Deep Tissue Grid Roller</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md line-clamp-2">High-density EVA foam designed to break down knots and accelerate post-workout recovery.</p>
+<div class="mt-auto flex justify-between items-end pt-sm border-t border-surface-variant">
+<span class="font-headline-md text-headline-md text-on-surface">$45.00</span>
+<button class="text-primary hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="add_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1; font-size: 32px;">add_circle</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-sm flex flex-col relative group box-shadow-brutal-hover transition-all duration-300">
+<div class="absolute top-sm left-sm bg-on-surface text-on-primary font-label-sm text-[10px] px-2 py-1 uppercase tracking-widest z-10">Low Stock</div>
+<div class="aspect-square bg-surface-container-low mb-sm overflow-hidden flex items-center justify-center border border-surface-variant relative">
+<img alt="Kettlebell" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500" data-alt="A single, heavy-duty matte black cast iron kettlebell sitting centrally on a light grey, minimalist surface. Bright, directional light hits the side of the bell, highlighting its rugged texture and clearly defined handle. The backdrop is pure white, creating a high-contrast, modern athletic vibe focused on raw strength and functional design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDREzP3_nh63E4NPE5BO94D9UYP7dYYGQBBG2O8UhWKEgFfZzN-bHxs9xDXQydKfSHoQ3JX7G3SSYxTfds15ED8JJMFr1_R7rjWEx1Rer8bkG4p0NT9r7Uv27DXM9k2fr2jM8nTuo57frNE1I0zayQbUwXVpECIzbGLcLdeoBha46zbs5jrWDoAEHQftwYw5PGKQpeddid-MxZFPTQ6KaplHHT0BmitGPib38ODpbUEoUAm7tD8M4AiPfs5e-aUziG5_rqcYFnnS7g"/>
+<div class="absolute inset-0 bg-on-surface/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+<button class="bg-primary text-on-surface font-headline-md text-headline-md px-md py-xs uppercase tracking-tight transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                     Quick Add
+                                 </button>
+</div>
+</div>
+<div class="flex-1 flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface leading-tight mb-xs uppercase">Cast Iron Kettlebell</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md line-clamp-2">Single-cast construction with a flat base for renegade rows. Available in 16kg, 24kg, 32kg.</p>
+<div class="mt-auto flex justify-between items-end pt-sm border-t border-surface-variant">
+<span class="font-headline-md text-headline-md text-on-surface">From $60.00</span>
+<button class="text-primary hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="add_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1; font-size: 32px;">add_circle</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-sm flex flex-col relative group box-shadow-brutal-hover transition-all duration-300">
+<div class="aspect-square bg-surface-container-low mb-sm overflow-hidden flex items-center justify-center border border-surface-variant relative">
+<img alt="Protein Powder Tub" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500" data-alt="A sleek, modern tub of protein powder with minimalist black and vibrant lime green branding, positioned against a stark white studio background. The lighting is crisp and even, reflecting off the smooth plastic surface. The scene conveys scientific precision, high-end sports nutrition, and clean energy, typical of a modern performance brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT8olKu-7PYwV9pBAXJKATuICi4e25Ub5i0o5iemDeUbafus9zbl9X1qU7XCzLin3fKHqqOS10G3HPzXZ5bzzX2hrLKOxa3QEdKSLuMutGAmcqJ_1ebptn1Uj8qyYyXaLZ5z_hOot6aZNUIa5SQaEsGyEh-VSm-_FfiYNoplxRWahaKLftfyYYBedGSIPdJUrLMwqx68KBhG3d_k3Z9oQ4V3JQZTrWJuXZF_piQaw2-BraKJgfbyR_uPSwS517I-HFDubdEHP-6aM"/>
+<div class="absolute inset-0 bg-on-surface/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+<button class="bg-primary text-on-surface font-headline-md text-headline-md px-md py-xs uppercase tracking-tight transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                     Quick Add
+                                 </button>
+</div>
+</div>
+<div class="flex-1 flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface leading-tight mb-xs uppercase">ISO-Pure Whey Isolate</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md line-clamp-2">25g of fast-absorbing protein per scoop. Zero sugar. Engineered for maximum muscle recovery.</p>
+<div class="mt-auto flex justify-between items-end pt-sm border-t border-surface-variant">
+<span class="font-headline-md text-headline-md text-on-surface">$55.00 <span class="font-body-md text-on-surface-variant">/ 2lbs</span></span>
+<button class="text-primary hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="add_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1; font-size: 32px;">add_circle</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 5 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-sm flex flex-col relative group box-shadow-brutal-hover transition-all duration-300">
+<div class="absolute top-sm left-sm bg-primary-fixed text-on-primary-fixed font-label-sm text-[10px] px-2 py-1 uppercase tracking-widest z-10">New Arrival</div>
+<div class="aspect-square bg-surface-container-low mb-sm overflow-hidden flex items-center justify-center border border-surface-variant relative">
+<img alt="Yoga Mat" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500" data-alt="A rolled-up premium alignment yoga mat in dark charcoal gray, secured with a minimalist black strap. It lies on a clean, bright white surface. The texture of the mat is highly visible under sharp studio lighting. The composition is simple, geometric, and functional, reflecting a high-contrast, modern fitness aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUDEerM06Q7D-WpkQ3mxAPVtX8rRkEURVpFz-csJybwErQj6z1xjkmpfzDGN0foXjfpIWzMielSflEZBw0yajWwhHLgyTLnMt-7tbprTE32pw4ODqSvmQPPJM1SSogLcxTWD9CdAZWKp_KCfrwZIqnkoqwb55UGN2Kw3bjFdibXfnWnPvaWk5jsEEVfjqoSTSFZkjDhHVY4IKegco4yAoVTmYMWJIKUkWmG_rDj9rQS40REy2PshY_yUU2wIX2KIWZdSmUMjAHyMI"/>
+<div class="absolute inset-0 bg-on-surface/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+<button class="bg-primary text-on-surface font-headline-md text-headline-md px-md py-xs uppercase tracking-tight transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                     Quick Add
+                                 </button>
+</div>
+</div>
+<div class="flex-1 flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface leading-tight mb-xs uppercase">Alignment Pro Mat</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md line-clamp-2">5mm dense cushioning with laser-engraved alignment lines for precision posing and joint support.</p>
+<div class="mt-auto flex justify-between items-end pt-sm border-t border-surface-variant">
+<span class="font-headline-md text-headline-md text-on-surface">$78.00</span>
+<button class="text-primary hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="add_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1; font-size: 32px;">add_circle</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 6 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-sm flex flex-col relative group box-shadow-brutal-hover transition-all duration-300">
+<div class="aspect-square bg-surface-container-low mb-sm overflow-hidden flex items-center justify-center border border-surface-variant relative">
+<img alt="Resistance Bands" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500" data-alt="A set of heavy-duty fabric resistance bands in varying shades of gray and black, laid out neatly on a light gray concrete surface. The lighting is bright and stark, highlighting the woven texture and rubberized interior grip. The image conveys functional training, durability, and a sleek, no-nonsense athletic design style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKVKEZUijjYcwJMTxVftsF5_Z-KAwSPH4zpJmRR11R5OQPvXRDtAxFF-UwXzC-cbu7_vDBsnJ4gss64pwjCxKFi9mPTgtMQN7Fjyj17ah41Gu0uvWCBdStl0s42HNyzMxv4Xe6yYq7C3R9zI29vn9O9sJEjlhdspEloa4-L1PSrvtUgG0kuwZuLA3Z6PWyovqcEIfWbMHxVs6yiDpDWkNL39ag1zdOXVvwQqZYeItve3R_LL65BFNFd5zz8zQyD8ig-BxxaGe_lxA"/>
+<div class="absolute inset-0 bg-on-surface/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+<button class="bg-primary text-on-surface font-headline-md text-headline-md px-md py-xs uppercase tracking-tight transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                     Quick Add
+                                 </button>
+</div>
+</div>
+<div class="flex-1 flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface leading-tight mb-xs uppercase">Tactical Resistance Loop Set</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md line-clamp-2">Fabric-woven bands that will not roll or snap. Three levels of tension for lower body activation.</p>
+<div class="mt-auto flex justify-between items-end pt-sm border-t border-surface-variant">
+<span class="font-headline-md text-headline-md text-on-surface">$35.00 <span class="font-body-md text-on-surface-variant">/ set of 3</span></span>
+<button class="text-primary hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="add_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1; font-size: 32px;">add_circle</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-xl flex justify-center items-center space-x-sm">
+<button class="p-xs text-on-surface-variant hover:text-on-surface border border-transparent hover:border-on-surface transition-all">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center font-headline-md text-headline-md bg-on-surface text-on-primary border border-on-surface">1</button>
+<button class="w-10 h-10 flex items-center justify-center font-headline-md text-headline-md text-on-surface hover:bg-surface-variant border border-transparent hover:border-outline-variant transition-all">2</button>
+<button class="w-10 h-10 flex items-center justify-center font-headline-md text-headline-md text-on-surface hover:bg-surface-variant border border-transparent hover:border-outline-variant transition-all">3</button>
+<span class="text-on-surface-variant">...</span>
+<button class="p-xs text-on-surface-variant hover:text-on-surface border border-transparent hover:border-on-surface transition-all">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-on-surface dark:bg-surface-container-lowest w-full py-xl border-t-4 border-primary dark:border-primary-container">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-xl px-gutter max-w-container-max mx-auto">
+<!-- Brand & Copyright -->
+<div class="flex flex-col justify-between">
+<div>
+<span class="font-display-lg-mobile text-display-lg-mobile text-primary-fixed dark:text-primary uppercase tracking-tight block mb-md" style="font-size: 48px; line-height: 1;">
+                        PERFORMANCE+X
+                    </span>
+<p class="font-body-md text-body-md text-surface-variant opacity-80 max-w-sm">
+                        Engineered for elite results. We build the tools that build the athlete. Uncompromising quality for those who demand more.
+                    </p>
+</div>
+<div class="mt-lg md:mt-0 font-label-sm text-label-sm text-surface-variant opacity-60 uppercase">
+                    © 2024 PERFORMANCE+X. ENGINEERED FOR ELITE RESULTS.
+                </div>
+</div>
+<!-- Links -->
+<div class="flex flex-col md:items-end">
+<nav class="flex flex-col space-y-sm text-left md:text-right">
+<!-- Links from JSON -->
+<a class="font-label-sm text-label-sm text-surface-variant opacity-80 hover:opacity-100 hover:text-primary-fixed transition-all cursor-pointer uppercase tracking-widest" href="#">Support</a>
+<a class="font-label-sm text-label-sm text-surface-variant opacity-80 hover:opacity-100 hover:text-primary-fixed transition-all cursor-pointer uppercase tracking-widest" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-surface-variant opacity-80 hover:opacity-100 hover:text-primary-fixed transition-all cursor-pointer uppercase tracking-widest" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-surface-variant opacity-80 hover:opacity-100 hover:text-primary-fixed transition-all cursor-pointer uppercase tracking-widest" href="#">Shipping &amp; Returns</a>
+<a class="font-label-sm text-label-sm text-surface-variant opacity-80 hover:opacity-100 hover:text-primary-fixed transition-all cursor-pointer uppercase tracking-widest" href="#">Wholesale</a>
+</nav>
+<!-- Social/Newsletter stub to fill space functionally -->
+<div class="mt-lg w-full md:w-auto">
+<h4 class="font-label-sm text-label-sm text-primary-fixed uppercase tracking-widest mb-xs text-left md:text-right">Join the Directive</h4>
+<div class="flex">
+<input class="bg-surface-container-lowest border border-outline-variant font-label-sm text-label-sm text-on-surface p-xs focus:outline-none w-full md:w-64 rounded-none" placeholder="EMAIL ADDRESS" type="email"/>
+<button class="bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm uppercase px-md border border-primary-fixed hover:bg-transparent hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined" data-icon="arrow_forward" style="font-size: 18px;">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

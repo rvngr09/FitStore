@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PERFORMANCE+X - Elite Training Gear</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface": "#1a1c1c",
+                      "outline-variant": "#c4c9ac",
+                      "on-primary-container": "#5b7300",
+                      "on-tertiary-fixed-variant": "#374956",
+                      "tertiary-fixed-dim": "#b6c9d8",
+                      "outline": "#747a60",
+                      "on-background": "#1a1c1c",
+                      "primary-fixed-dim": "#abd600",
+                      "surface-dim": "#dadada",
+                      "on-primary-fixed": "#161e00",
+                      "on-secondary-fixed-variant": "#474646",
+                      "surface-bright": "#f9f9f9",
+                      "surface-container-lowest": "#ffffff",
+                      "primary": "#506600",
+                      "tertiary": "#4f616e",
+                      "on-primary": "#ffffff",
+                      "inverse-surface": "#2f3131",
+                      "secondary": "#5f5e5e",
+                      "surface-container": "#eeeeee",
+                      "on-secondary": "#ffffff",
+                      "surface-container-low": "#f3f3f3",
+                      "primary-fixed": "#c3f400",
+                      "secondary-fixed": "#e5e2e1",
+                      "inverse-on-surface": "#f1f1f1",
+                      "tertiary-fixed": "#d2e5f5",
+                      "background": "#f9f9f9",
+                      "surface-variant": "#e2e2e2",
+                      "on-surface-variant": "#444933",
+                      "on-secondary-container": "#656464",
+                      "on-secondary-fixed": "#1c1b1b",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-fixed-variant": "#3c4d00",
+                      "surface-container-highest": "#e2e2e2",
+                      "surface-container-high": "#e8e8e8",
+                      "secondary-fixed-dim": "#c8c6c5",
+                      "primary-container": "#ccff00",
+                      "on-tertiary-container": "#5b6d7a",
+                      "surface": "#f9f9f9",
+                      "tertiary-container": "#dcefff",
+                      "inverse-primary": "#abd600",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed": "#0b1d29",
+                      "secondary-container": "#e5e2e1",
+                      "error": "#ba1a1a",
+                      "error-container": "#ffdad6",
+                      "surface-tint": "#506600",
+                      "on-error": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "lg": "48px",
+                      "xl": "80px",
+                      "base": "4px",
+                      "md": "24px",
+                      "xs": "8px",
+                      "container-max": "1280px",
+                      "sm": "16px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "display-lg": [
+                              "Anton"
+                      ],
+                      "body-md": [
+                              "Archivo Narrow"
+                      ],
+                      "headline-md": [
+                              "Archivo Narrow"
+                      ],
+                      "display-lg-mobile": [
+                              "Anton"
+                      ],
+                      "headline-xl-mobile": [
+                              "Anton"
+                      ],
+                      "headline-xl": [
+                              "Anton"
+                      ],
+                      "label-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "body-lg": [
+                              "Archivo Narrow"
+                      ]
+              },
+              "fontSize": {
+                      "display-lg": [
+                              "80px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-xl-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-xl": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Custom Utilities for High Contrast Aesthetic */
+        .brutal-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(26,28,28,1); /* on-surface */
+        }
+        .brutal-shadow-lg {
+            box-shadow: 8px 8px 0px 0px rgba(26,28,28,1);
+        }
+        
+        .bg-pattern {
+            background-image: radial-gradient(var(--tw-colors-surface-variant) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-lg min-h-screen flex flex-col antialiased selection:bg-primary-container selection:text-on-primary-fixed">
+<!-- TopNavBar (from Shared Components) -->
+<header class="w-full top-0 sticky bg-surface dark:bg-on-surface border-b-2 border-on-surface dark:border-outline-variant flat no shadows z-50">
+<div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-20">
+<!-- Brand -->
+<a class="font-display-lg text-display-lg uppercase tracking-tight text-on-surface dark:text-surface-bright hidden md:block" href="#">
+                PERFORMANCE+X
+            </a>
+<a class="font-display-lg-mobile text-display-lg-mobile uppercase tracking-tight text-on-surface dark:text-surface-bright block md:hidden" href="#">
+                P+X
+            </a>
+<!-- Desktop Nav -->
+<nav class="hidden md:flex gap-md h-full">
+<a class="text-primary dark:text-primary-fixed-dim border-b-4 border-primary pb-1 h-full flex items-center font-label-sm text-label-sm uppercase hover:bg-surface-container transition-colors duration-200 px-4 pt-1" href="#">Training</a>
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-on-surface dark:hover:text-surface-bright h-full flex items-center font-label-sm text-label-sm uppercase hover:bg-surface-container transition-colors duration-200 px-4 pt-1" href="#">Equipment</a>
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-on-surface dark:hover:text-surface-bright h-full flex items-center font-label-sm text-label-sm uppercase hover:bg-surface-container transition-colors duration-200 px-4 pt-1" href="#">Nutrition</a>
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-on-surface dark:hover:text-surface-bright h-full flex items-center font-label-sm text-label-sm uppercase hover:bg-surface-container transition-colors duration-200 px-4 pt-1" href="#">Apparel</a>
+</nav>
+<!-- Actions -->
+<div class="flex items-center gap-sm">
+<button class="text-primary dark:text-primary-fixed-dim hover:bg-surface-container p-2 active:translate-y-0.5 transition-transform">
+<span class="material-symbols-outlined">shopping_cart</span>
+</button>
+<button class="text-primary dark:text-primary-fixed-dim hover:bg-surface-container p-2 active:translate-y-0.5 transition-transform">
+<span class="material-symbols-outlined">person</span>
+</button>
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden text-primary p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-grow w-full">
+<!-- Hero Section -->
+<section class="relative w-full overflow-hidden bg-on-surface text-surface-container-lowest pt-xl pb-xl md:pt-32 md:pb-32 px-gutter">
+<div class="max-w-container-max mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
+<div class="lg:col-span-7 flex flex-col gap-sm relative">
+<!-- Decorative element -->
+<div class="absolute -top-12 -left-12 w-24 h-24 bg-primary-container opacity-20 rounded-full blur-2xl"></div>
+<span class="font-label-sm text-label-sm text-primary-fixed uppercase tracking-widest block mb-4">Elite Human Performance</span>
+<h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg uppercase leading-none tracking-tight">
+                        BUILT FOR <br class="hidden md:block"/> <span class="text-primary-fixed">RESULTS.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-surface-variant max-w-xl mt-4 md:mt-8">
+                        Precision-engineered equipment, high-performance apparel, and scientifically backed nutrition designed to push you beyond your perceived limits.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4 mt-8 md:mt-12">
+<button class="bg-primary-container text-on-primary-container font-label-sm text-label-sm uppercase px-8 py-4 brutal-shadow active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2 border-2 border-transparent">
+                            Shop Equipment
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="bg-transparent border-2 border-surface-container-lowest text-surface-container-lowest font-label-sm text-label-sm uppercase px-8 py-4 hover:bg-surface-container-lowest hover:text-on-surface transition-colors flex items-center justify-center gap-2">
+                            Explore Training
+                        </button>
+</div>
+</div>
+<div class="lg:col-span-5 relative mt-12 lg:mt-0 h-[400px] md:h-[600px] w-full">
+<!-- Brutalist Image Frame -->
+<div class="absolute inset-0 bg-primary-container brutal-shadow-lg translate-x-4 translate-y-4"></div>
+<div class="absolute inset-0 border-4 border-on-surface bg-surface overflow-hidden">
+<img alt="Athlete training" class="w-full h-full object-cover grayscale contrast-125 mix-blend-multiply opacity-80" data-alt="A highly intense, close-up shot of a muscular athlete lifting heavy kettlebells in a stark, modern industrial gym environment. The lighting is high-contrast, featuring deep, dramatic shadows against bright, stark white concrete walls. Accents of vibrant, electric lime green bounce off the matte black training equipment. The mood is raw, aggressive, and highly focused, capturing the essence of elite physical performance and engineered strength." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcUlDZI5uB7YfH2w8xG9vymu-7auTKbXveacJl03G2RtsOw1YRGS8bkMsaugBjL6ip_pkc1SSLgmR0zo9Ll-NPQYvzqrATFtpXM9EW-20FQ15bitMnB-fj0IhPOcO934_d67Eb-2s0CyL7G6_MKuoBeLLErtV8rB90a7u8lCH7q0KftIoTFnwYfuumaPiZi7_BUsXNc7GVoBwH53-R5jcJGsjmCfq9VX1v4EVoNX3tw45Xa-lmu-bl2GZwPvzoRjSLEHAQr1BD-Qs"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Categories / Bento Grid -->
+<section class="py-xl px-gutter max-w-container-max mx-auto bg-surface">
+<div class="flex flex-col md:flex-row justify-between items-end mb-md">
+<div>
+<h2 class="font-headline-xl-mobile text-headline-xl-mobile md:font-headline-xl md:text-headline-xl uppercase">Engineered Arsenal</h2>
+<p class="font-body-lg text-body-lg text-secondary mt-2">Everything required to dominate your discipline.</p>
+</div>
+<a class="font-label-sm text-label-sm uppercase border-b-2 border-on-surface pb-1 hover:text-primary transition-colors hidden md:block" href="#">View All Arsenal</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-sm auto-rows-[300px] md:auto-rows-[400px]">
+<!-- Category 1: Equipment (Large) -->
+<div class="md:col-span-8 relative group cursor-pointer border-2 border-on-surface brutal-shadow bg-surface-container-lowest overflow-hidden">
+<img alt="Gym Equipment" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:scale-105 group-hover:grayscale-0 transition-all duration-700 z-0 opacity-70" data-alt="A wide, angled shot of a pristine, high-end gym floor featuring rows of sleek, matte black barbells and weight plates. The environment is minimalist and clinical, lit by harsh, cool overhead lighting that creates stark contrast. Subtle neon lime accents highlight the weight denominations on the plates. The composition emphasizes structural precision, industrial strength, and top-tier engineering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlAkcWmbtSEFQ8alOxYSeEPPDtxhidSYsVPWkH_0MHlvho9QlTrCALOZ5llEjnvxAceWRcSDUHNjUBhltQV9XNA0RlV-35tRenUnkThGTXDdfe-I595_6lSO5kzOroJ0S-v9mjGcXlOxsKZG5dvAjOil8X2eh_8nXdEnyjJNZEzH8iS3j3exAJG6MHE_FkGOfyOtWzc8thYQYuFQheiO-Yryw3Cy32eBDBR8aPGxL5AgdM3gkOIktwXmP0x_5dDnOgAzp2i2IZ6mQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/90 to-transparent z-10"></div>
+<div class="absolute bottom-0 left-0 p-md z-20 flex flex-col gap-2">
+<span class="bg-primary-container text-on-primary-container font-label-sm text-label-sm px-2 py-1 uppercase w-fit">Category 01</span>
+<h3 class="font-headline-xl-mobile text-headline-xl-mobile md:font-headline-xl md:text-headline-xl text-surface-container-lowest uppercase leading-none">Professional<br/>Equipment</h3>
+</div>
+</div>
+<!-- Category 2: Apparel (Tall/Narrow) -->
+<div class="md:col-span-4 relative group cursor-pointer border-2 border-on-surface brutal-shadow bg-surface-container-lowest overflow-hidden">
+<img alt="Performance Apparel" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:scale-105 group-hover:grayscale-0 transition-all duration-700 z-0 opacity-70" data-alt="A striking portrait of a male fitness model wearing tight, black compression gear, posed against a pure, stark white background. The lighting is sharp and directional, highlighting the technical fabric texture and musculature. Minimalist graphic lines in bright electric green intersect the background. The visual tone is sleek, fast, and highly technical, reflecting modern performance wear." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEIG_UAkUCe6ER4IKvY-wv0K_Sesfy2hFhPN1wInAzPagyRao595FTWkicxybqMwbKZAaJRbZHVThair9l3905p-QD8vDRDUIbvVYyJNlGY4WJvruHleB7IpEPUr58APH6prPKyB9aj3z1A6q6dQ8zppAhXYuT21Zl83bFx8nvCKpdcDxEBXPoZnj_LjWrzjOcKA582GUD_AuA9tWl2_RmfaIJJn2JpxcdBlz0XeAeraKrk6esrayf1Z_Lqp4oVgNUUEEZS6SnxYo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/90 to-transparent z-10"></div>
+<div class="absolute bottom-0 left-0 p-md z-20 flex flex-col gap-2">
+<span class="bg-primary-container text-on-primary-container font-label-sm text-label-sm px-2 py-1 uppercase w-fit">Category 02</span>
+<h3 class="font-headline-xl-mobile text-headline-xl-mobile text-surface-container-lowest uppercase leading-none">Technical<br/>Apparel</h3>
+</div>
+</div>
+<!-- Category 3: Supplements (Wide below) -->
+<div class="md:col-span-12 relative group cursor-pointer border-2 border-on-surface brutal-shadow bg-surface-container-lowest overflow-hidden h-[250px] md:h-[300px]">
+<div class="absolute inset-0 flex">
+<div class="w-1/2 h-full bg-surface-container-low p-md flex flex-col justify-center relative z-20">
+<!-- Technical Grid Pattern -->
+<div class="absolute inset-0 pointer-events-none" style="background-image: linear-gradient(var(--tw-colors-outline-variant) 1px, transparent 1px), linear-gradient(90deg, var(--tw-colors-outline-variant) 1px, transparent 1px); background-size: 20px 20px; opacity: 0.2;"></div>
+<span class="bg-primary-container text-on-primary-container font-label-sm text-label-sm px-2 py-1 uppercase w-fit mb-4">Category 03</span>
+<h3 class="font-headline-xl-mobile text-headline-xl-mobile md:font-headline-xl md:text-headline-xl text-on-surface uppercase leading-none mb-2">Clinical Nutrition</h3>
+<p class="font-body-md text-body-md text-secondary max-w-md hidden md:block">Scientifically formulated compounds designed to accelerate recovery and amplify output.</p>
+</div>
+<div class="w-1/2 h-full relative">
+<img alt="Supplements" class="absolute inset-0 w-full h-full object-cover grayscale contrast-125" data-alt="A sterile, lab-like environment showcasing sleek black tubs of protein powder and performance supplements arranged symmetrically on a stainless steel table. The background is pure white clinical light. A vibrant, glowing green liquid is being poured into a matte black shaker bottle in the foreground, creating a dynamic splash. The aesthetic is clean, scientific, and high-energy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaVJ2RCO9FA0TKQpvbMV2G2VwcOFy9A5k3jajlX_bS1Q5tFanVgHO7NRdzyuI96uzSB31ZI19K-LzY11J_2I13i-DZUJ9LprdG0hVVwbr8t1iekwMpqmRQmUhOcKo1_wAJZb6Ilb6-v0QiyhksFzxZ6JesixxigqqSU_3Ij9z7GRhufJ9Fps1o9vWR9iPHcbYzMQW9S0ZOpP5C0eWNE3Uif9fTNvQn7phXooBIktMEANKjW8_8u5ZMziQJze4t8rwp9OSNfH4Kyh4"/>
+</div>
+</div>
+</div>
+</div>
+<a class="font-label-sm text-label-sm uppercase border-b-2 border-on-surface pb-1 hover:text-primary transition-colors block md:hidden mt-8 text-center" href="#">View All Arsenal</a>
+</section>
+<!-- CTA / Join Community -->
+<section class="py-xl px-gutter bg-primary-container text-on-primary-container">
+<div class="max-w-container-max mx-auto text-center flex flex-col items-center">
+<span class="material-symbols-outlined text-display-lg-mobile mb-4">bolt</span>
+<h2 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg uppercase tracking-tight max-w-3xl leading-none">
+                    STOP TRAINING. <br/> START EXECUTING.
+                </h2>
+<p class="font-body-lg text-body-lg mt-6 max-w-2xl font-bold">
+                    Join the P+X Elite roster. Get exclusive access to limited gear drops, advanced training protocols, and clinical nutrition breakdowns.
+                </p>
+<form class="mt-8 flex flex-col sm:flex-row gap-4 w-full max-w-lg">
+<div class="flex-grow flex flex-col gap-1 text-left">
+<label class="font-label-sm text-label-sm uppercase" for="email">Comms Link (Email)</label>
+<input class="w-full bg-surface-container-lowest border-2 border-on-primary-container px-4 py-3 font-body-md focus:outline-none focus:border-on-surface focus:ring-0 text-on-surface" id="email" placeholder="ENTER ADDRESS" required="" type="email"/>
+</div>
+<button class="bg-on-surface text-surface-container-lowest font-label-sm text-label-sm uppercase px-8 py-3 h-[52px] mt-auto hover:bg-inverse-surface transition-colors brutal-shadow" type="submit">
+                        Enlist
+                    </button>
+</form>
+</div>
+</section>
+</main>
+<!-- Footer (from Shared Components) -->
+<footer class="bg-on-surface dark:bg-surface-container-lowest text-primary-fixed dark:text-primary w-full py-xl border-t-4 border-primary dark:border-primary-container flat no shadows z-10 relative">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-xl px-gutter max-w-container-max mx-auto">
+<!-- Brand & Copyright -->
+<div class="flex flex-col gap-6">
+<div class="font-display-lg-mobile text-display-lg-mobile text-primary-fixed dark:text-primary uppercase leading-none">
+                    P+X
+                </div>
+<p class="font-label-sm text-label-sm text-surface-variant opacity-80 uppercase max-w-xs">
+                    © 2024 PERFORMANCE+X. ENGINEERED FOR ELITE RESULTS.
+                </p>
+</div>
+<!-- Links Grid -->
+<div class="grid grid-cols-2 gap-8">
+<div class="flex flex-col gap-4">
+<span class="font-label-sm text-label-sm text-primary-fixed dark:text-primary uppercase tracking-widest border-b border-primary-fixed/30 pb-2 mb-2 w-full">Intel</span>
+<a class="font-label-sm text-label-sm text-surface-variant opacity-80 hover:opacity-100 hover:text-primary-fixed transition-all cursor-pointer uppercase" href="#">Support</a>
+<a class="font-label-sm text-label-sm text-surface-variant opacity-80 hover:opacity-100 hover:text-primary-fixed transition-all cursor-pointer uppercase" href="#">Shipping &amp; Returns</a>
+<a class="font-label-sm text-label-sm text-surface-variant opacity-80 hover:opacity-100 hover:text-primary-fixed transition-all cursor-pointer uppercase" href="#">Wholesale</a>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-label-sm text-label-sm text-primary-fixed dark:text-primary uppercase tracking-widest border-b border-primary-fixed/30 pb-2 mb-2 w-full">Legal</span>
+<a class="font-label-sm text-label-sm text-surface-variant opacity-80 hover:opacity-100 hover:text-primary-fixed transition-all cursor-pointer uppercase" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-surface-variant opacity-80 hover:opacity-100 hover:text-primary-fixed transition-all cursor-pointer uppercase" href="#">Terms of Service</a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>
