@@ -1,0 +1,53 @@
+[project]
+ref_id = ""
+name = "fitness-store"
+version = "1.0.0"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+extra_search_path = ["public"]
+max_rows = 1000
+
+[db]
+major_version = 15
+
+[db.pooler]
+enabled = true
+pool_mode = "transaction"
+default_pool_size = 20
+max_client_conn = 100
+
+[auth]
+enabled = true
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["http://localhost:3000/**"]
+jwt_expiry = 3600
+enable_signup = true
+
+[auth.email]
+enable_confirmations = false
+enable_autoconfirm = true
+
+[storage]
+enabled = true
+
+[edge_runtime]
+enabled = false
+policy = "per_worker"
+inspector_port = 8083
+
+[analytics]
+enabled = false
+port = 54327
+vector_port = 54328
+
+# Custom configuration for the API
+[api.tables]
+"products" = { insert = "authenticated", select = "public", update = "authenticated", delete = "authenticated" }
+"categories" = { insert = "authenticated", select = "public", update = "authenticated", delete = "authenticated" }
+"tags" = { insert = "authenticated", select = "public", update = "authenticated", delete = "authenticated" }
+"cart_items" = { insert = "authenticated", select = "authenticated", update = "authenticated", delete = "authenticated" }
+"orders" = { insert = "authenticated", select = "authenticated", update = "authenticated", delete = "authenticated" }
+"order_items" = { insert = "authenticated", select = "authenticated", update = "authenticated", delete = "authenticated" }
