@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
 import OrderSummary from '@/components/OrderSummary';
-import api from '@/lib/api';
+import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 
 export default function CheckoutPage() {
@@ -25,35 +25,55 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      setError('Please log in to place an order');
+      return;
+    }
     setLoading(true);
     setError('');
 
     try {
+      const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+
+      const { data: order, error: orderErr } = await supabase
+        .from('orders')
+        .insert({
+          order_number: orderNumber,
+          user_id: user.id,
+          customer_name: form.customer_name,
+          customer_phone: form.customer_phone,
+          customer_email: form.customer_email,
+          shipping_address: form.shipping_address,
+          notes: form.notes || null,
+          subtotal,
+          total: subtotal + (subtotal >= 50 ? 0 : 5.99),
+          status: 'pending',
+        })
+        .select()
+        .single();
+
+      if (orderErr || !order) throw orderErr || new Error('Failed to create order');
+
       const orderItems = items.map((i) => ({
+        order_id: order.id,
         product_id: i.product_id,
+        product_name: i.product.name,
+        product_price: i.product.price,
         quantity: i.quantity,
+        subtotal: i.product.price * i.quantity,
       }));
 
-      const payload: Record<string, unknown> = {
-        ...form,
-        items: orderItems,
-      };
+      const { error: itemsErr } = await supabase
+        .from('order_items')
+        .insert(orderItems);
 
-      const token = localStorage.getItem('auth-token');
-      if (!token) {
-        payload.session_id = localStorage.getItem('session-id') || '';
-      }
+      if (itemsErr) throw itemsErr;
 
-      const { data } = await api.post('/orders', payload);
+      await supabase.from('cart_items').delete().eq('user_id', user.id);
       clearCart();
-      router.push(`/order/confirmation/${data.id}`);
+      router.push(`/order/confirmation/${order.id}`);
     } catch (err: unknown) {
-      if (err && typeof err === 'object' && 'response' in err) {
-        const axiosErr = err as { response?: { data?: { message?: string } } };
-        setError(axiosErr.response?.data?.message || 'Failed to place order');
-      } else {
-        setError('Failed to place order');
-      }
+      setError(err instanceof Error ? err.message : 'Failed to place order');
     } finally {
       setLoading(false);
     }
@@ -77,7 +97,6 @@ export default function CheckoutPage() {
 
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Customer Details */}
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Shipping Details</h2>
@@ -155,7 +174,6 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* Order Summary */}
           <div>
             <OrderSummary
               subtotal={subtotal}

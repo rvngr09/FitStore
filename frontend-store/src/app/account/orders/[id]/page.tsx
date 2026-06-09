@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
-import api from '@/lib/api';
+import { supabase } from '@/lib/supabase';
 
 interface Order {
   id: number;
@@ -45,8 +45,12 @@ export default function OrderDetailPage() {
     if (!user) return;
     async function load() {
       try {
-        const { data } = await api.get(`/orders/${id}`);
-        setOrder(data);
+        const { data } = await supabase
+          .from('orders')
+          .select('*, items:order_items(*)')
+          .eq('id', id)
+          .single();
+        setOrder(data as unknown as Order);
       } catch {
         // error
       } finally {

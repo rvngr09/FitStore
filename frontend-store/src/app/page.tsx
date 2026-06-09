@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import api from '@/lib/api';
+import { supabase } from '@/lib/supabase';
 import ProductGrid from '@/components/ProductGrid';
 
 interface Product {
@@ -32,12 +32,21 @@ export default function Home() {
   useEffect(() => {
     async function load() {
       try {
-        const [productsRes, categoriesRes] = await Promise.all([
-          api.get('/products', { params: { featured: true, per_page: 8 } }),
-          api.get('/categories'),
+        const [{ data: products }, { data: cats }] = await Promise.all([
+          supabase
+            .from('products')
+            .select('*, category:categories(name, slug), tags:product_tag(tag:tags(id, name, slug))')
+            .eq('is_featured', true)
+            .eq('is_active', true)
+            .limit(8),
+          supabase
+            .from('categories')
+            .select('id, name, slug, products_count')
+            .eq('is_active', true)
+            .order('sort_order'),
         ]);
-        setFeaturedProducts(productsRes.data.data);
-        setCategories(categoriesRes.data);
+        setFeaturedProducts((products || []) as unknown as Product[]);
+        setCategories((cats || []) as Category[]);
       } catch (err) {
         console.error('Failed to load data', err);
       } finally {
@@ -49,7 +58,6 @@ export default function Home() {
 
   return (
     <div>
-      {/* Hero */}
       <section className="bg-gradient-to-br from-gray-900 via-secondary to-gray-800 text-white">
         <div className="max-w-7xl mx-auto px-4 py-20 md:py-32">
           <div className="max-w-2xl">
@@ -78,7 +86,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Categories */}
       <section className="max-w-7xl mx-auto px-4 py-16">
         <h2 className="text-2xl font-bold text-gray-900 mb-8">Shop by Category</h2>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -98,7 +105,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Products */}
       <section className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
@@ -119,7 +125,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="bg-primary py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Ready to Get Started?</h2>

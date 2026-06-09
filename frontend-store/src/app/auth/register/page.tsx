@@ -4,12 +4,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
-import { useCart } from '@/contexts/CartContext';
 
 export default function RegisterPage() {
   const router = useRouter();
   const { register } = useAuth();
-  const { mergeCart } = useCart();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -29,20 +27,9 @@ export default function RegisterPage() {
 
     try {
       await register(name, email, password, passwordConfirmation);
-      await mergeCart();
       router.push('/');
     } catch (err: unknown) {
-      if (err && typeof err === 'object' && 'response' in err) {
-        const axiosErr = err as { response?: { data?: { message?: string; errors?: Record<string, string[]> } } };
-        const errors = axiosErr.response?.data?.errors;
-        if (errors) {
-          setError(Object.values(errors).flat().join(', '));
-        } else {
-          setError(axiosErr.response?.data?.message || 'Registration failed');
-        }
-      } else {
-        setError('Registration failed. Please try again.');
-      }
+      setError(err instanceof Error ? err.message : 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }

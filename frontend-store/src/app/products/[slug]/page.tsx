@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import api from '@/lib/api';
+import { supabase } from '@/lib/supabase';
 import { useCart } from '@/contexts/CartContext';
 
 interface Product {
@@ -32,8 +32,16 @@ export default function ProductDetailPage() {
   useEffect(() => {
     async function load() {
       try {
-        const { data } = await api.get(`/products/${slug}`);
-        setProduct(data);
+        const { data } = await supabase
+          .from('products')
+          .select('*, category:categories(*), tags:product_tag(tag:tags(*))')
+          .eq('slug', slug)
+          .single();
+        if (!data) {
+          setError('Product not found');
+        } else {
+          setProduct(data as unknown as Product);
+        }
       } catch {
         setError('Product not found');
       } finally {
@@ -97,14 +105,12 @@ export default function ProductDetailPage() {
       </nav>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Image */}
         <div className="bg-gray-100 rounded-lg aspect-square flex items-center justify-center">
           <svg className="w-32 h-32 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
         </div>
 
-        {/* Details */}
         <div>
           <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
           <p className="text-sm text-gray-500 mt-1 capitalize">{product.category.name}</p>

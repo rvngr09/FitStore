@@ -4,12 +4,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
-import { useCart } from '@/contexts/CartContext';
 
 export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
-  const { mergeCart } = useCart();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,15 +21,9 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
-      await mergeCart();
       router.push('/');
     } catch (err: unknown) {
-      if (err && typeof err === 'object' && 'response' in err) {
-        const axiosErr = err as { response?: { data?: { message?: string; errors?: Record<string, string[]> } } };
-        setError(axiosErr.response?.data?.message || 'Invalid email or password');
-      } else {
-        setError('Login failed. Please try again.');
-      }
+      setError(err instanceof Error ? err.message : 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }

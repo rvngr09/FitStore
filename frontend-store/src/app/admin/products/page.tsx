@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import api from '@/lib/api';
+import { supabase } from '@/lib/supabase';
 
 interface Product {
   id: number;
@@ -34,8 +34,11 @@ export default function AdminProductsPage() {
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
-      const { data } = await api.get('/admin/products');
-      setProducts(data.data);
+      const { data } = await supabase
+        .from('products')
+        .select('*, category:categories(id, name)')
+        .order('created_at', { ascending: false });
+      setProducts((data || []) as unknown as Product[]);
     } catch (err) {
       console.error(err);
     } finally {
@@ -45,7 +48,7 @@ export default function AdminProductsPage() {
 
   useEffect(() => {
     fetchProducts();
-    api.get('/admin/categories').then(({ data }) => setCategories(data)).catch(() => {});
+    supabase.from('categories').select('id, name').then(({ data }) => setCategories((data || []) as Category[]));
   }, [fetchProducts]);
 
   const openCreate = () => {
@@ -66,11 +69,20 @@ export default function AdminProductsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const payload = { ...form, price: parseFloat(form.price), stock: parseInt(form.stock), category_id: parseInt(form.category_id) };
+      const slug = form.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      const payload = {
+        name: form.name,
+        slug,
+        price: parseFloat(form.price),
+        stock: parseInt(form.stock),
+        category_id: parseInt(form.category_id),
+        is_featured: form.is_featured,
+        is_active: form.is_active,
+      };
       if (editing) {
-        await api.put(`/admin/products/${editing.id}`, payload);
+        await supabase.from('products').update(payload).eq('id', editing.id);
       } else {
-        await api.post('/admin/products', payload);
+        await supabase.from('products').insert(payload);
       }
       setShowForm(false);
       fetchProducts();
@@ -82,7 +94,7 @@ export default function AdminProductsPage() {
   const handleDelete = async (id: number) => {
     if (!confirm('Delete this product?')) return;
     try {
-      await api.delete(`/admin/products/${id}`);
+      await supabase.from('products').delete().eq('id', id);
       fetchProducts();
     } catch (err) {
       console.error(err);

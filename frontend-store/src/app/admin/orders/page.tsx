@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import api from '@/lib/api';
+import { supabase } from '@/lib/supabase';
 
 interface Order {
   id: number;
@@ -24,11 +24,20 @@ export default function AdminOrdersPage() {
   const fetchOrders = useCallback(async () => {
     setLoading(true);
     try {
-      const params: Record<string, string> = {};
-      if (filter) params.status = filter;
-      if (search) params.search = search;
-      const { data } = await api.get('/admin/orders', { params });
-      setOrders(data.data);
+      let query = supabase
+        .from('orders')
+        .select('id, order_number, customer_name, customer_phone, total, status, created_at')
+        .order('created_at', { ascending: false });
+
+      if (filter) {
+        query = query.eq('status', filter);
+      }
+      if (search) {
+        query = query.or(`order_number.ilike.%${search}%,customer_name.ilike.%${search}%`);
+      }
+
+      const { data } = await query;
+      setOrders((data || []) as Order[]);
     } catch (err) {
       console.error(err);
     } finally {
@@ -40,7 +49,7 @@ export default function AdminOrdersPage() {
 
   const updateStatus = async (id: number, status: string) => {
     try {
-      await api.put(`/admin/orders/${id}/status`, { status });
+      await supabase.from('orders').update({ status }).eq('id', id);
       fetchOrders();
     } catch (err) {
       console.error(err);

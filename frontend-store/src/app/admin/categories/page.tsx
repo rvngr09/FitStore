@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import api from '@/lib/api';
+import { supabase } from '@/lib/supabase';
 
 interface Category {
   id: number;
@@ -22,8 +22,11 @@ export default function AdminCategoriesPage() {
   const fetchCategories = useCallback(async () => {
     setLoading(true);
     try {
-      const { data } = await api.get('/admin/categories');
-      setCategories(data);
+      const { data } = await supabase
+        .from('categories')
+        .select('*')
+        .order('sort_order');
+      setCategories((data || []) as Category[]);
     } catch (err) {
       console.error(err);
     } finally {
@@ -48,11 +51,12 @@ export default function AdminCategoriesPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const payload = { ...form, sort_order: parseInt(form.sort_order) };
+      const slug = form.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      const payload = { name: form.name, slug, sort_order: parseInt(form.sort_order), is_active: form.is_active };
       if (editing) {
-        await api.put(`/admin/categories/${editing.id}`, payload);
+        await supabase.from('categories').update(payload).eq('id', editing.id);
       } else {
-        await api.post('/admin/categories', payload);
+        await supabase.from('categories').insert(payload);
       }
       setShowForm(false);
       fetchCategories();
@@ -64,7 +68,7 @@ export default function AdminCategoriesPage() {
   const handleDelete = async (id: number) => {
     if (!confirm('Delete this category?')) return;
     try {
-      await api.delete(`/admin/categories/${id}`);
+      await supabase.from('categories').delete().eq('id', id);
       fetchCategories();
     } catch (err) {
       alert('Cannot delete category with existing products');

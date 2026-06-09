@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import api from '@/lib/api';
+import { supabase } from '@/lib/supabase';
 
 interface Order {
   id: number;
@@ -28,17 +28,22 @@ export default function OrdersPage() {
   }, [user, authLoading, router]);
 
   useEffect(() => {
+    if (!user) return;
     async function load() {
       try {
-        const { data } = await api.get('/orders');
-        setOrders(data.data);
+        const { data } = await supabase
+          .from('orders')
+          .select('*, items:order_items(id, product_name)')
+          .eq('user_id', user!.id)
+          .order('created_at', { ascending: false });
+        setOrders((data || []) as unknown as Order[]);
       } catch {
         // error
       } finally {
         setLoading(false);
       }
     }
-    if (user) load();
+    load();
   }, [user]);
 
   if (authLoading || loading) {

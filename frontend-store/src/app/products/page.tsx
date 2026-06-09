@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
-import api from '@/lib/api';
+import { supabase } from '@/lib/supabase';
 import ProductGrid from '@/components/ProductGrid';
 
 interface Product {
@@ -50,20 +50,25 @@ function ProductsContent() {
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
-      const params: Record<string, string | number | boolean> = {
-        page,
-        per_page: 12,
-        sort: filters.sort,
-        direction: filters.direction,
-      };
-      if (filters.category) params.category = filters.category;
-      if (filters.tag) params.tag = filters.tag;
-      if (filters.search) params.search = filters.search;
+      const PER_PAGE = 12;
+      let query = supabase
+        .from('products')
+        .select('*, category:categories(name, slug), tags:product_tag(tag:tags(id, name, slug))', { count: 'exact' })
+        .eq('is_active', true)
+        .order(filters.sort === 'name' ? 'name' : filters.sort, { ascending: filters.direction === 'asc' })
+        .range((page - 1) * PER_PAGE, page * PER_PAGE - 1);
 
-      const { data } = await api.get('/products', { params });
-      setProducts(data.data);
-      setTotal(data.total);
-      setLastPage(data.last_page);
+      if (filters.category) {
+        query = query.eq('category.slug', filters.category);
+      }
+      if (filters.search) {
+        query = query.ilike('name', `%${filters.search}%`);
+      }
+
+      const { data, count } = await query;
+      setProducts((data || []) as unknown as Product[]);
+      setTotal(count || 0);
+      setLastPage(Math.ceil((count || 0) / PER_PAGE));
     } catch (err) {
       console.error(err);
     } finally {
@@ -77,12 +82,12 @@ function ProductsContent() {
 
   useEffect(() => {
     async function loadFilters() {
-      const [catRes, tagRes] = await Promise.all([
-        api.get('/categories'),
-        api.get('/tags'),
+      const [{ data: cats }, { data: tgs }] = await Promise.all([
+        supabase.from('categories').select('id, name, slug').eq('is_active', true).order('sort_order'),
+        supabase.from('tags').select('id, name, slug').order('name'),
       ]);
-      setCategories(catRes.data);
-      setTags(tagRes.data);
+      setCategories((cats || []) as Category[]);
+      setTags((tgs || []) as Tag[]);
     }
     loadFilters();
   }, []);

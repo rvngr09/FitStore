@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import api from '@/lib/api';
+import { supabase } from '@/lib/supabase';
 
 interface DashboardData {
   total_orders: number;
@@ -26,8 +26,29 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     async function load() {
       try {
-        const { data } = await api.get('/admin/dashboard');
-        setData(data);
+        const [{ count: totalOrders }, { count: pendingOrders }, { count: totalProducts }, { data: lowStock }, { data: recentOrders }] = await Promise.all([
+          supabase.from('orders').select('*', { count: 'exact', head: true }),
+          supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+          supabase.from('products').select('*', { count: 'exact', head: true }),
+          supabase.from('products').select('id').lt('stock', 10).gte('stock', 1),
+          supabase.from('orders').select('id, order_number, customer_name, total, status, created_at').order('created_at', { ascending: false }).limit(5),
+        ]);
+
+        const { data: revenueData } = await supabase
+          .from('orders')
+          .select('total')
+          .in('status', ['delivered', 'shipped', 'confirmed', 'processing']);
+
+        const totalRevenue = (revenueData || []).reduce((sum, o) => sum + Number(o.total), 0);
+
+        setData({
+          total_orders: totalOrders || 0,
+          pending_orders: pendingOrders || 0,
+          total_revenue: totalRevenue,
+          total_products: totalProducts || 0,
+          low_stock: lowStock?.length || 0,
+          recent_orders: (recentOrders || []) as DashboardData['recent_orders'],
+        });
       } catch (err) {
         console.error(err);
       } finally {

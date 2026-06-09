@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import api from '@/lib/api';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface Order {
   id: number;
@@ -23,31 +24,20 @@ interface Order {
 
 export default function OrderConfirmationPage() {
   const { id } = useParams<{ id: string }>();
+  const { user } = useAuth();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!user) return;
     async function load() {
       try {
-        const token = localStorage.getItem('auth-token');
-        const sessionId = localStorage.getItem('session-id');
-        let data;
-
-        if (token) {
-          const res = await api.get(`/orders/${id}`);
-          data = res.data;
-        } else if (sessionId) {
-          const res = await api.post('/orders/guest', {
-            session_id: sessionId,
-            order_id: id,
-          });
-          data = res.data;
-        } else {
-          setLoading(false);
-          return;
-        }
-
-        setOrder(data);
+        const { data } = await supabase
+          .from('orders')
+          .select('*, items:order_items(*)')
+          .eq('id', id)
+          .single();
+        setOrder(data as unknown as Order);
       } catch {
         // error
       } finally {
@@ -55,7 +45,7 @@ export default function OrderConfirmationPage() {
       }
     }
     load();
-  }, [id]);
+  }, [id, user]);
 
   if (loading) {
     return (

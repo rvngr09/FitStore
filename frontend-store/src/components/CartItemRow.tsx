@@ -4,7 +4,7 @@ import { useCart } from '@/contexts/CartContext';
 import Link from 'next/link';
 
 interface CartItem {
-  id: number;
+  id: number | string;
   product_id: number;
   quantity: number;
   product: {

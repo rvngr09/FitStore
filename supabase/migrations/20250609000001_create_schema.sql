@@ -6,31 +6,6 @@
 -- ========================================
 
 -- ---------------------------------------------------------
--- Users (extends Supabase auth.users)
--- ---------------------------------------------------------
-CREATE TABLE IF NOT EXISTS public.users (
-  id                BIGSERIAL PRIMARY KEY,
-  uuid              UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
-  name              TEXT NOT NULL,
-  email             TEXT NOT NULL UNIQUE,
-  email_verified_at TIMESTAMPTZ,
-  password          TEXT NOT NULL,
-  remember_token    TEXT,
-  created_at        TIMESTAMPTZ DEFAULT NOW(),
-  updated_at        TIMESTAMPTZ DEFAULT NOW()
-);
-
-ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Users can view own profile"
-  ON public.users FOR SELECT
-  USING (auth.uid()::text = uuid::text);
-
-CREATE POLICY "Users can update own profile"
-  ON public.users FOR UPDATE
-  USING (auth.uid()::text = uuid::text);
-
--- ---------------------------------------------------------
 -- Categories
 -- ---------------------------------------------------------
 CREATE TABLE IF NOT EXISTS public.categories (
@@ -110,22 +85,53 @@ CREATE POLICY "Product tags are publicly readable" ON public.product_tag FOR SEL
 CREATE POLICY "Product tags are manageable by authenticated" ON public.product_tag FOR ALL USING (auth.role() = 'authenticated');
 
 -- ---------------------------------------------------------
+-- User Profiles (extends Supabase auth.users)
+-- ---------------------------------------------------------
+CREATE TABLE IF NOT EXISTS public.user_profiles (
+  id   UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  role TEXT NOT NULL DEFAULT 'customer'
+);
+
+ALTER TABLE public.user_profiles ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can view own profile" ON public.user_profiles FOR SELECT USING (auth.uid() = id);
+CREATE POLICY "Users can update own profile" ON public.user_profiles FOR UPDATE USING (auth.uid() = id);
+
+-- Auto-create profile on signup
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.user_profiles (id, name, role)
+  VALUES (
+    NEW.id,
+    COALESCE(NEW.raw_user_meta_data ->> 'name', NEW.email),
+    'customer'
+  );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW
+  EXECUTE FUNCTION public.handle_new_user();
+
+-- ---------------------------------------------------------
 -- Cart Items
 -- ---------------------------------------------------------
 CREATE TABLE IF NOT EXISTS public.cart_items (
   id         BIGSERIAL PRIMARY KEY,
-  session_id TEXT,
-  user_id    BIGINT REFERENCES public.users(id) ON DELETE CASCADE,
+  user_id    UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   product_id BIGINT NOT NULL REFERENCES public.products(id) ON DELETE CASCADE,
   quantity   INTEGER NOT NULL DEFAULT 1,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (user_id, product_id)
 );
 
-CREATE INDEX idx_cart_items_session ON public.cart_items(session_id);
 CREATE INDEX idx_cart_items_user ON public.cart_items(user_id);
 ALTER TABLE public.cart_items ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Users manage own cart" ON public.cart_items FOR ALL USING (auth.uid()::text = (SELECT uuid FROM public.users WHERE id = user_id));
+CREATE POLICY "Users manage own cart" ON public.cart_items FOR ALL USING (auth.uid() = user_id);
 
 -- ---------------------------------------------------------
 -- Orders
@@ -141,7 +147,7 @@ END $$;
 CREATE TABLE IF NOT EXISTS public.orders (
   id               BIGSERIAL PRIMARY KEY,
   order_number     TEXT NOT NULL UNIQUE,
-  user_id          BIGINT REFERENCES public.users(id) ON DELETE SET NULL,
+  user_id          UUID NOT NULL REFERENCES auth.users(id) ON DELETE SET NULL,
   customer_name    TEXT NOT NULL,
   customer_phone   TEXT NOT NULL,
   customer_email   TEXT,
@@ -158,10 +164,8 @@ CREATE INDEX idx_orders_user ON public.orders(user_id);
 CREATE INDEX idx_orders_status ON public.orders(status);
 CREATE INDEX idx_orders_order_number ON public.orders(order_number);
 ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Users view own orders" ON public.orders FOR SELECT USING (
-  auth.uid()::text = (SELECT uuid FROM public.users WHERE id = user_id)
-);
-CREATE POLICY "Authenticated can insert orders" ON public.orders FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "Users view own orders" ON public.orders FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Users can insert orders" ON public.orders FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 -- ---------------------------------------------------------
 -- Order Items
@@ -181,9 +185,11 @@ CREATE TABLE IF NOT EXISTS public.order_items (
 CREATE INDEX idx_order_items_order ON public.order_items(order_id);
 ALTER TABLE public.order_items ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users view own order items" ON public.order_items FOR SELECT USING (
-  EXISTS (SELECT 1 FROM public.orders WHERE id = order_id AND auth.uid()::text = (SELECT uuid FROM public.users WHERE id = user_id))
+  EXISTS (SELECT 1 FROM public.orders WHERE id = order_id AND auth.uid() = user_id)
 );
-CREATE POLICY "Authenticated can insert order items" ON public.order_items FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "Users can insert order items" ON public.order_items FOR INSERT WITH CHECK (
+  EXISTS (SELECT 1 FROM public.orders WHERE id = order_id AND auth.uid() = user_id)
+);
 
 -- ---------------------------------------------------------
 -- Helper: updated_at trigger
@@ -201,7 +207,7 @@ DECLARE
   tbl TEXT;
 BEGIN
   FOR tbl IN
-    SELECT unnest(ARRAY['users', 'categories', 'tags', 'products', 'cart_items', 'orders', 'order_items'])
+    SELECT unnest(ARRAY['categories', 'tags', 'products', 'cart_items', 'orders', 'order_items'])
   LOOP
     EXECUTE format(
       'CREATE TRIGGER set_updated_at BEFORE UPDATE ON public.%I FOR EACH ROW EXECUTE FUNCTION public.trigger_set_updated_at()',
